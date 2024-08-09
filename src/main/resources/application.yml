@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: be-wellnesspring
+#dataSource
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/wellness?characterEncoding=UTF-8&serverTimezone=UTC
+    username: wellnessdb
+    password: wellNess77
+
+#context-path
+server:
+  servlet:
+    context-path: /
+
+#port
+  port: 9999
+
+#mybatis
+mybatis:
+  type-aliases-package: com.bewellnesspring
+  mapper-locations: classpath:/mappers/**/*.xml
+  configuration:
+    jdbc-type-for-null: null
+    map-underscore-to-camel-case: true
