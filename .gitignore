@@ -181,4 +181,4 @@ replay_pid*
 # End of https://www.toptal.com/developers/gitignore/api/java,intellijs
 
 # Ignore application.yml
-config/mysql/application.yml
+src/main/resources/config/mysql/application.yml
