@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface SportCategoryMapper {
 
@@ -14,4 +16,8 @@ public interface SportCategoryMapper {
     //sport_category테이블 비우기
     @Delete("truncate table sport_category")
     void truncateSportCategory();
+
+    SportCategory selectSportCategoryById(Long sportCategoryId);
+
+    List<SportCategory> selectAllSportCategories();
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bewellnesspring.mappers.WorkoutRecordMapper">
+
+    <insert id="insertWorkoutRecord" parameterType="com.bewellnesspring.domain.WorkoutRecord">
+        INSERT INTO workout_record (sport_name, set_count, sport_count, volume)
+        VALUES (#{sportName}, #{setCount}, #{sportCount}, #{volume})
+    </insert>
+
+<!--    <select id="selectWorkoutRecordById" resultType="com.bewellnesspring.domain.WorkoutRecord">
+        SELECT id, sport_routine_id , sport_category_id, set_count, sport_count,volume,  routine_start ,
+        routine_end FROM Sport_Routine_List  WHERE id = #{id}
+    </select>-->
+
+    <select id="selectAllWorkoutRecords" resultType="com.bewellnesspring.domain.WorkoutRecord">
+        SELECT  id, sport_routine_id , sport_category_id, set_count, sport_count,volume,
+        routine_start, routine_End  FROM Sport_Routine_List
+
+
+    </select>
+
+  <!--  <update id="updateWorkoutRecord" parameterType="com.bewellnesspring.domain.WorkoutRecord">
+        UPDATE Sport_Routine_List
+        SET
+        sport_routine_id = #{sportRoutineId},
+        sport_category_id = #{sportCategoryId},
+        set_count = #{setCount},
+        sport_count = #{sportCount},
+        volume = #{volume},
+        routine_start = #{routineStart},
+        routine_end = #{routineEnd}
+        WHERE id = #{id}
+    </update>-->
+
+
+    <delete id="deleteWorkoutRecord" parameterType="Long">
+        DELETE FROM Sport_Routine_List  WHERE id = #{id}
+    </delete>
+
+</mapper>

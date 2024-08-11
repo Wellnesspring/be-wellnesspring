@@ -33,6 +33,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc' // jdbc 의존성 추가
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    implementation 'org.mybatis:mybatis-typehandlers-jsr310:1.0.2'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
