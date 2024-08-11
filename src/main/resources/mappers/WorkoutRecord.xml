@@ -9,10 +9,17 @@
         VALUES (#{sportName}, #{setCount}, #{sportCount}, #{volume})
     </insert>
 
-<!--    <select id="selectWorkoutRecordById" resultType="com.bewellnesspring.domain.WorkoutRecord">
-        SELECT id, sport_routine_id , sport_category_id, set_count, sport_count,volume,  routine_start ,
-        routine_end FROM Sport_Routine_List  WHERE id = #{id}
-    </select>-->
+    <select id="selectWorkoutRecordById" resultType="com.bewellnesspring.domain.WorkoutRecord">
+        SELECT id
+             , sport_routine_id
+             , sport_category_id
+             , set_count
+             , sport_count,volume
+             , routine_start
+             , routine_end
+        FROM Sport_Routine_List
+        WHERE id = #{id}
+    </select>
 
     <select id="selectAllWorkoutRecords" resultType="com.bewellnesspring.domain.WorkoutRecord">
         SELECT  id, sport_routine_id , sport_category_id, set_count, sport_count,volume,
@@ -21,7 +28,7 @@
 
     </select>
 
-  <!--  <update id="updateWorkoutRecord" parameterType="com.bewellnesspring.domain.WorkoutRecord">
+    <update id="updateWorkoutRecord" parameterType="com.bewellnesspring.domain.WorkoutRecord">
         UPDATE Sport_Routine_List
         SET
         sport_routine_id = #{sportRoutineId},
@@ -32,7 +39,7 @@
         routine_start = #{routineStart},
         routine_end = #{routineEnd}
         WHERE id = #{id}
-    </update>-->
+    </update>
 
 
     <delete id="deleteWorkoutRecord" parameterType="Long">
