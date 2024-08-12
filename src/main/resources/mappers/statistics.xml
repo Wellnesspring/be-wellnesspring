@@ -10,11 +10,11 @@
     </select>
 
     <select id="selectKcal" parameterType="map" resultType="map">
-        SELECT * FROM kcal
+        SELECT * FROM meal_detail
     </select>
 
     <select id="selectFood" parameterType="map" resultType="map">
-        SELECT * FROM food
+        SELECT * FROM food_category
     </select>
 
 </mapper>
