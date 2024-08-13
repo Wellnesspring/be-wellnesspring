@@ -21,4 +21,8 @@ public class CertificationDao {
 	public User signIn(String userId) {
 		return session.selectOne(MAP + "signin", userId);
 	}
+
+	public boolean signUp(User u) {
+		return session.insert(MAP + "signUp", u) > 0;
+	}
 }

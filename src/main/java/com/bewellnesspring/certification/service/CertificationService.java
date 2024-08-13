@@ -22,4 +22,8 @@ public class CertificationService {
 
 		return null;
 	}
+
+	public boolean signUp(User u) {
+		return dao.signUp(u);
+	}
 }

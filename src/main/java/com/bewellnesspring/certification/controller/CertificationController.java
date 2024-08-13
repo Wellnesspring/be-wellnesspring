@@ -18,4 +18,9 @@ public class CertificationController {
 	public User signIn(@RequestBody User u) {
 		return service.signIn(u);
 	}
+
+	@PostMapping("/signup")
+	public boolean signIUp(@RequestBody User u) {
+		return service.signUp(u);
+	}
 }
