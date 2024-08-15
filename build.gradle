@@ -23,7 +23,6 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -31,17 +30,17 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.33' // mysql 의존성추가
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc' // jdbc 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-jdbc' // jdbc 의존성 추가
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation group: 'org.json', name: 'json', version: '20231013'    //json 데이터 가공하기 위한 라이브러리
+    implementation 'org.springframework.boot:spring-boot-starter-security' // security 의존성 추가
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+    testImplementation 'org.springframework.security:spring-security-test' // security 의존성 추가
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    
-    implementation group: 'org.json', name: 'json', version: '20231013'    //json 데이터 가공하기 위한 라이브러리
-
 }
 
 tasks.named('test') {
