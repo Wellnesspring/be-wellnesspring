@@ -8,6 +8,13 @@
 		WHERE USER_ID = #{userId}
 	</select>
 
+	<select id="signInAtIdNum" parameterType="int" resultType="user">
+		SELECT *
+		FROM USERS
+		INNER JOIN social using(user_id)
+		WHERE platform = 'kakao' and id_num = #{idNum}
+	</select>
+
 	<insert id="signUp" parameterType="user">
 		INSERT INTO USERS(user_id, user_pw, name, serial_num_l, serial_num_f, phone, height, weight, profileImg)
 		VALUES (

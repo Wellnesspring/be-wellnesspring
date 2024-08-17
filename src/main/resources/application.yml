@@ -23,3 +23,9 @@ mybatis:
   configuration:
     jdbc-type-for-null: null
     map-underscore-to-camel-case: true
+
+#social
+social:
+  kakao:
+    api-key: b9f133be5346a55f04808ed817f6a6ca
+    redirect-url: http://localhost:3000/oauth/kakao

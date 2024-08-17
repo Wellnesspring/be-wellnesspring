@@ -30,4 +30,8 @@ public class CertificationDao {
 	public boolean signUp(User u) {
 		return session.insert(MAP + "signUp", u) > 0;
 	}
+
+	public User signIn(int idNum) {
+		return session.selectOne(MAP + "signInAtIdNum", idNum);
+	}
 }

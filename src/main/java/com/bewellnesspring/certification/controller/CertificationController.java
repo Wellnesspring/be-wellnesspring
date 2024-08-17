@@ -5,11 +5,10 @@ import com.bewellnesspring.certification.service.CertificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("auth")
 @RequiredArgsConstructor
 public class CertificationController {
 
@@ -36,6 +35,18 @@ public class CertificationController {
 	 */
 	@PostMapping("/signup")
 	public ResponseEntity<Object> signUp(@RequestBody User u) {
-		return service.signUp(u)? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(service.signUp(u) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	/**
+	 * 카카오 계정을 이용한 로그인
+	 * @param code 사용자가 카카오에 요청하여 받아온 인증코드
+	 * @param state csrf 대비용
+	 * @return 사용자 정보
+	 */
+	@GetMapping("/kakao")
+	public ResponseEntity<User> useKakao(@RequestParam String code, @RequestParam String state) {
+		User u = service.useKakao(code, state);
+		return u != null ? new ResponseEntity<>(u, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 }
