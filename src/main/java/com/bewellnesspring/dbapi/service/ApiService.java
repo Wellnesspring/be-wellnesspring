@@ -1,29 +1,29 @@
-package com.bewellnesspring.dbapi;
+package com.bewellnesspring.dbapi.service;
 
+import com.bewellnesspring.dbapi.model.repository.FoodCategoryMapper;
+import com.bewellnesspring.dbapi.model.repository.SportCategoryMapper;
+import com.bewellnesspring.dbapi.model.vo.FoodCategory;
+import com.bewellnesspring.dbapi.model.vo.SportCategory;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-@RestController
+@Service
 @RequiredArgsConstructor
-public class ApiContorller {
+public class ApiService {
 
-    @Autowired
-    private SportCategoryMapper sportCategoryMapper;
+//    @Autowired
+    private final SportCategoryMapper sportCategoryMapper;
+//    @Autowired
+    private final FoodCategoryMapper foodCategoryMapper;
 
-    @Autowired
-    private FoodCategoryMapper foodCategoryMapper;
 
-
-    @RequestMapping("/sportApi")
     public String saveSportApi() {
 
         int affetedRows = 0;
@@ -60,13 +60,12 @@ public class ApiContorller {
                     affetedRows++;
                 }
             }
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-            return "sport_category db저장 완료 ! 저장된 column수 : "+affetedRows;
+        } catch(Exception e){
+            e.printStackTrace();
         }
+        return "sport_category db저장 완료 ! 저장된 column수 : "+affetedRows;
+    }
 
-    @RequestMapping("/foodApi")
     public String saveFoodApi() {
 
         int affetedRows = 0;
@@ -115,5 +114,4 @@ public class ApiContorller {
         }
         return "Food_category db저장 완료 ! 저장된 column수 : "+affetedRows;
     }
-    }
-
+}

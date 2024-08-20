@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewellnesspring.dbapi.model.repository.SportCategoryMapper">
+
+    <!-- API에서 받아온 데이터를 Sport_category 테이블에 삽입하기 -->
+    <insert id="insertApitoSportCategory">
+        INSERT INTO Sport_Category (id, sport_name, kcal)
+        VALUES (#{id}, #{sportName}, #{kcal})
+    </insert>
+
+    <!-- Sport_category 테이블 비우기 -->
+    <delete id="truncateSportCategory">
+        TRUNCATE TABLE Sport_category
+    </delete>
+
+</mapper>
