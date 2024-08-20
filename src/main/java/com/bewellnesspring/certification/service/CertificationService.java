@@ -1,6 +1,6 @@
 package com.bewellnesspring.certification.service;
 
-import com.bewellnesspring.certification.model.dao.CertificationDao;
+import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.EncodeField;
 import com.bewellnesspring.certification.model.vo.User;
 import com.bewellnesspring.common.AESCodec;
@@ -26,8 +26,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class CertificationService {
 
-	private CertificationDao dao;
-	private BCryptPasswordEncoder bCryptEncoder;
+	private final CertificationMapper dao;
+	private final BCryptPasswordEncoder bCryptEncoder;
 
 	@Value("@{social.kakao.api-key}")
 	private String apiKey;
@@ -40,7 +40,7 @@ public class CertificationService {
 			User dbUser = userDecoding(dao.signIn(u.getUserId()));
 
 //			사용자가 입력한 정보와 db에 있는 내용이 일치하면
-			if (u.getUserId().equals(dbUser.getUserId()) && u.getUserPw().equals(dbUser.getUserPw())) {
+			if (u.getUserId().equals(dbUser.getUserId()) && bCryptEncoder.matches(u.getUserPw(), dbUser.getUserPw())) {
 				return dbUser;
 			}
 		} catch (Exception ignored) {}
@@ -49,7 +49,7 @@ public class CertificationService {
 
 	public User signIn(int idNum) {
 		try {
-			return userDecoding(dao.signIn(idNum));
+			return userDecoding(dao.signInAtIdNum(idNum));
 		} catch (Exception ignored) {}
 		return null;
 	}
@@ -84,13 +84,11 @@ public class CertificationService {
 
 		for (Field field : fields) {
 			field.setAccessible(true); // private 필드 접근 허용
-			String value = (String) field.get(u); // 필드 값 가져오기
+			Object value = field.get(u); // 필드 값 가져오기
 
 			if(value != null) {
 				if(field.isAnnotationPresent(EncodeField.class)) { // 인코딩 하고자 하는 필드라면
-					field.set(u, AESCodec.AESEncrypt(AESKey, value)); // 인코딩된 값 추가
-				} else {
-					field.set(u, value);
+					field.set(u, AESCodec.AESEncrypt(AESKey, (String) value)); // 인코딩된 값 추가
 				}
 			}
 		}
@@ -105,20 +103,18 @@ public class CertificationService {
 	 * @param u DB에서 조회한 암호화된 사용자 정보
 	 * @return 복호화된 사용자 정보
 	 */
-	private User userDecoding(User u) throws IllegalAccessException, GeneralSecurityException {
+	public User userDecoding(User u) throws IllegalAccessException, GeneralSecurityException {
 		if(u == null) return null;
 
 		Field[] fields = User.class.getDeclaredFields();
 
 		for (Field field : fields) {
 			field.setAccessible(true); // private 필드 접근 허용
-			String value = (String) field.get(u); // 필드 값 가져오기
+			Object value = field.get(u); // 필드 값 가져오기
 
 			if(value != null) {
-				if(field.isAnnotationPresent(EncodeField.class)) { // 인코딩 하고자 하는 필드라면
-					field.set(u, AESCodec.AESDecrypt(u.getLocker(), value)); // 인코딩된 값 추가
-				} else {
-					field.set(u, value);
+				if(field.isAnnotationPresent(EncodeField.class)) { // 디코딩 하고자 하는 필드라면
+					field.set(u, AESCodec.AESDecrypt(u.getLocker(), (String) value)); // 디코딩된 값 추가
 				}
 			}
 		}

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CertificationController {
 
-	private CertificationService service;
+	private final CertificationService service;
 
 	/**
 	 * 사용자 정보 조회

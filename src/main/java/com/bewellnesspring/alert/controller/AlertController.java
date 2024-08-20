@@ -2,9 +2,8 @@ package com.bewellnesspring.alert.controller;
 
 import com.bewellnesspring.alert.service.AlertService;
 import com.bewellnesspring.alert.service.EmailService;
-import com.bewellnesspring.certification.model.dao.CertificationDao;
+import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,7 @@ public class AlertController {
     @Autowired
     private EmailService emailService;
     @Autowired
-    private CertificationDao certificationDao;
+    private CertificationMapper certificationMapper;
 
     public AlertController(AlertService alertService, EmailService emailService) {
         this.alertService = alertService;
@@ -43,7 +42,7 @@ public class AlertController {
             e.printStackTrace();
             return "error";
         }
-        User user = certificationDao.signIn(userId);
+        User user = certificationMapper.signIn(userId);
         if(user.getAlarmAgree().equals("동의")){
             emailService.sendAlertEmail(user,"새로운 알림", "test용 알림입니다.");
         } else {
