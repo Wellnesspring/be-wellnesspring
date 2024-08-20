@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewellnesspring.dbapi.model.repository.FoodCategoryMapper">
+
+    <!-- API에서 받아온 데이터를 Food_category 테이블에 삽입하기 -->
+    <insert id="insertApitoFoodCategory">
+        INSERT INTO Food_Category (id, food_name, kcal, na, protein, fiber, fat, cholesterol, carbohydrate)
+        VALUES (#{id}, #{food_name}, #{kcal}, #{na}, #{protein}, #{fiber}, #{fat}, #{cholesterol}, #{carbohydrate})
+    </insert>
+
+    <!-- Food_category 테이블 비우기 -->
+    <delete id="truncateFoodCategory">
+        TRUNCATE TABLE food_Category
+    </delete>
+
+</mapper>

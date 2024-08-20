@@ -1,4 +1,4 @@
-package com.bewellnesspring.dbapi;
+package com.bewellnesspring.dbapi.model.vo;
 
 import lombok.AccessLevel;
 import lombok.Data;

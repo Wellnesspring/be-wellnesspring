@@ -25,4 +25,5 @@ public class User {
 	private String alarmAgree;
 	private String profileImg;
 	private int point;
+	private String email;
 }
