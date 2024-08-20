@@ -2,13 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="certificationMapper">
 
-	<select id="signin" parameterType="string" resultType="user">
+	<select id="signIn" parameterType="string" resultType="user">
 		SELECT *
 		FROM USERS
 		WHERE USER_ID = #{userId}
 	</select>
 
-	<insert id="signup" parameterType="user">
+	<select id="signInAtIdNum" parameterType="int" resultType="user">
+		SELECT *
+		FROM USERS
+		INNER JOIN social using(user_id)
+		WHERE platform = 'kakao' and id_num = #{idNum}
+	</select>
+
+	<insert id="signUp" parameterType="user">
 		INSERT INTO USERS(user_id, user_pw, name, serial_num_l, serial_num_f, phone, height, weight, profileImg)
 		VALUES (
 		        #{userId},

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -14,16 +16,22 @@ public class User {
 	private String userId;
 	private int rule;
 	private String userPw;
+	@EncodeField
 	private String name;
+	@EncodeField
 	private String serialNumF;
+	@EncodeField
 	private String serialNumL;
+	@EncodeField
 	private String phone;
-	private int height;
-	private int weight;
-//	논란이 있을 수 있음
-	private String joinAt;
+	@EncodeField
+	private String height;
+	@EncodeField
+	private String weight;
+	private Timestamp joinAt;
 	private String alarmAgree;
+	@EncodeField
 	private String profileImg;
 	private int point;
-	private String email;
+	private String locker;
 }
