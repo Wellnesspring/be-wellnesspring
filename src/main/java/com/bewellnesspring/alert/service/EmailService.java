@@ -18,7 +18,7 @@ public class EmailService {
         try{
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("yoohwanjoo@nate.com");
-            message.setTo(userId.getEmail());
+            message.setTo(userId.getUserId());
             message.setSubject(subject);
             message.setText(body);
 

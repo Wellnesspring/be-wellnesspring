@@ -3,13 +3,12 @@
 <mapper namespace="com.bewellnesspring.alert.model.repository.AlertMapper">
 
     <insert id="insertAlert">
-        <!-- 타입 테이블을 따로 해서 타입id를 넣을지 말지 아직 미정-->
-        INSERT INTO alert (user_id,message)
-        VALUES(#{userId}, #{message})
+        INSERT INTO alert (type_id,user_id,alertTime,scheduled)
+        VALUES#{typeId},#{userId}, #{alertTime},{scheduled})
     </insert>
 
-    <select id="">
-
+    <select id="findAll">
+        select * from alert;
     </select>
 
 
