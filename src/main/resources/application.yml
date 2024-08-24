@@ -12,6 +12,11 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+#  파일 업로드 크기 제한
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
 
 #context-path
 server:
