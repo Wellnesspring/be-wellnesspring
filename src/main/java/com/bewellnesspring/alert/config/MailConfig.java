@@ -12,7 +12,7 @@ public class MailConfig {
 
 
     @Bean
-    public JavaMailSender javaMailSender() {
+    JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.mail.nate.com");
         mailSender.setPort(587);

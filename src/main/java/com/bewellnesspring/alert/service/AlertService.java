@@ -3,7 +3,7 @@ package com.bewellnesspring.alert.service;
 import com.bewellnesspring.alert.model.repository.AlertMapper;
 import com.bewellnesspring.alert.model.repository.AlertTypeMapper;
 import com.bewellnesspring.alert.model.vo.AlertType;
-import com.bewellnesspring.certification.model.dao.CertificationDao;
+import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ public class AlertService {
 
     private final AlertMapper alertMapper;
     private final AlertTypeMapper alertTypeMapper;
-    private final CertificationDao dao;
+    private final CertificationMapper certificationMapper;
 
     //알림 생성후 db에 저장하기
     public void createAlert(String userId,String alType,Date alertTime,int scheduled) {
 
-        User user = dao.signIn(userId);
+        User user = certificationMapper.signIn(userId);
         AlertType alertType = alertTypeMapper.findByAltype(alType);
 
 

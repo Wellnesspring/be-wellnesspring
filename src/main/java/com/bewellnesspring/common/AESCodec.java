@@ -4,8 +4,8 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Base64;
 
 public class AESCodec {
@@ -46,7 +46,7 @@ public class AESCodec {
 		Cipher cipher = Cipher.getInstance("AES");
 		cipher.init(Cipher.DECRYPT_MODE, StringToSecretKey(AESKey));
 
-		return Arrays.toString(cipher.doFinal(Base64.getDecoder().decode(encryptedData)));
+		return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedData)), StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class AESCodec {
 	 * @return String 으로 변환된 SecretKey
 	 */
 	public static String SecretKeyToString(SecretKey AESKey) {
-		return Arrays.toString(Base64.getEncoder().encode(AESKey.getEncoded()));
+		return Base64.getEncoder().encodeToString(AESKey.getEncoded());
 	}
 
 	/**

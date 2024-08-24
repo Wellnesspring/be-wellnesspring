@@ -7,12 +7,21 @@ spring:
     url: jdbc:mysql://localhost:3306/wellness?characterEncoding=UTF-8&serverTimezone=UTC
     username: wellnessdb
     password: wellNess77
+#  view resolver(페이지 반환) 관련 설정
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+#  파일 업로드 크기 제한
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
 
 #context-path
 server:
   servlet:
     context-path: /
-
 #port
   port: 9999
 
@@ -28,4 +37,4 @@ mybatis:
 social:
   kakao:
     api-key: b9f133be5346a55f04808ed817f6a6ca
-    redirect-url: http://localhost:3000/oauth/kakao
+    redirect-url: http://localhost:9999/auth/kakao

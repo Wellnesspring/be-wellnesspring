@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="certificationMapper">
+<mapper namespace="com.bewellnesspring.certification.model.repository.CertificationMapper">
 
 	<select id="signIn" parameterType="string" resultType="user">
 		SELECT *
@@ -16,7 +16,7 @@
 	</select>
 
 	<insert id="signUp" parameterType="user">
-		INSERT INTO USERS(user_id, user_pw, name, serial_num_l, serial_num_f, phone, height, weight, profileImg)
+		INSERT INTO USERS(user_id, user_pw, name, serial_num_l, serial_num_f, phone, height, weight, profileImg, locker)
 		VALUES (
 		        #{userId},
                 #{userPw},
@@ -26,7 +26,8 @@
                 #{phone},
                 #{height},
                 #{weight},
-                #{profileImg}
+                #{profileImg},
+		        #{locker}
 			   )
 	</insert>
 </mapper>
