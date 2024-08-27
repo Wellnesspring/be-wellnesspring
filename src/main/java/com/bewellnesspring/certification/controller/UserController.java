@@ -22,8 +22,6 @@ public class UserController {
 	 * @param file
 	 * @param request
 	 * @return
-	 * @throws IllegalStateException
-	 * @throws IOException
 	 */
 	@PostMapping("/upload")
 	public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IllegalStateException, IOException {
@@ -33,7 +31,7 @@ public class UserController {
 		img.mkdirs();
 		
 		if(file.getContentType().contains("image"))
-		file.transferTo(img);
+			file.transferTo(img);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

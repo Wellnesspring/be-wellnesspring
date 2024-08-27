@@ -5,7 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-src\main\webapp\upload\**
+src/main/webapp/upload/**
 
 ### STS ###
 .apt_generated
