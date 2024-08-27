@@ -1,22 +1,19 @@
 package com.bewellnesspring.alert.service;
 
 import com.bewellnesspring.alert.model.repository.AlertMapper;
-import com.bewellnesspring.alert.model.vo.Alert;
-import com.bewellnesspring.certification.model.dao.CertificationDao;
+import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class AlertService {
 
     private final AlertMapper alertMapper;
-    private final CertificationDao dao;
+    private final CertificationMapper dao;
 
     @Autowired
-    public AlertService(AlertMapper alertMapper, CertificationDao dao) {
+    public AlertService(AlertMapper alertMapper, CertificationMapper dao) {
         this.alertMapper = alertMapper;
         this.dao = dao;
     }

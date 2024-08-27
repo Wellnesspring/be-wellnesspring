@@ -5,22 +5,35 @@ create database wellness;
 
 use wellness;
 
+DROP TABLE social CASCADE;
+DROP TABLE Food_Category CASCADE;
+DROP TABLE Food_Like CASCADE;
+DROP TABLE Meal CASCADE;
+DROP TABLE Meal_detail CASCADE;
+DROP TABLE Sport_Category CASCADE;
+DROP TABLE Sport_Like CASCADE;
+DROP TABLE Sport_Routine CASCADE;
+DROP TABLE Sport_Routine_List CASCADE;
+DROP TABLE Weight_Record CASCADE;
+DROP TABLE Alert CASCADE;
+DROP TABLE Alert_type CASCADE;
+DROP TABLE users CASCADE;
+
 CREATE TABLE users(
         user_id 	VARCHAR(50) primary key	NOT NULL,
         role 	int	DEFAULT 0	COMMENT '0:회원 , 1:관리자',
-        user_pw 	varchar(50) NOT NULL,
-        name 	varchar(20) NOT NULL,
-        serial_num_f 	varchar(7) NOT NULL	COMMENT '성별값까지 7자리 저장',
+        user_pw 	varchar(100) NOT NULL,
+        name 	varchar(100) NOT NULL,
+        serial_num_f 	varchar(100) NOT NULL	COMMENT '성별값까지 7자리 저장',
         serial_num_l 	varchar(100) NOT NULL	COMMENT '추후 암호화 생각중',
-        phone 	varchar(15) NOT NULL,
-        height 	int,
-        weight 	int,
+        phone 	varchar(100) NOT NULL,
+        height 	varchar(100),
+        weight 	varchar(100),
         join_at 	timestamp DEFAULT now() COMMENT '회원 가입일자', #now() : insert 시점의 날짜 데이터 삽입 (초까지)
         alarm_agree 	varchar(10) COMMENT '동의,거부',
-        profileImg 	varchar(250),
+        profileImg 	varchar(100),
         point 	int,
-        locker varchar(100) NOT NULL,
-        email varchar(100)
+        locker varchar(100) NOT NULL
 );
 
 CREATE TABLE social(

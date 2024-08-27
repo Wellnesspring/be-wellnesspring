@@ -32,6 +32,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc' // jdbc 의존성 추가
     implementation 'com.google.code.gson:gson'    // json 데이터 가공하기 위한 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-security' // security 의존성 추가
+//    추후 리엑트 페이지 배포시 필요할 수도 있음(당장 영향 없음)
+//    jsp 파일을 처리하기 위한 jsp 엔진
+//    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
