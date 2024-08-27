@@ -113,13 +113,16 @@ CREATE TABLE  Alert  (
          id int auto_increment primary key	NOT NULL,
          type_id 	int,
          user_id 	VARCHAR(50),
-         message varchar(255),
          read_or_not 	varchar(10) DEFAULT 'UNREAD',
-         created_at 	timestamp DEFAULT now()
+         created_at 	timestamp DEFAULT now(),
+         alertTime timestamp,
+         scheduled int
 );
 
 CREATE TABLE  Alert_type  (
           type_id 	int auto_increment primary key	NOT NULL,
-          message 	varchar(255),
-          altype 	varchar(20)	COMMENT '종목별 알림(운동시간,식사알림,목표달성 등)'
+          altype 	varchar(20)	COMMENT '종목별 알림(운동시간,식사알림,목표달성 등)',
+          message1 	varchar(255),
+          message2 	varchar(255)
+
 );

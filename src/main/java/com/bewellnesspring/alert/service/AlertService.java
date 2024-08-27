@@ -1,36 +1,40 @@
 package com.bewellnesspring.alert.service;
 
 import com.bewellnesspring.alert.model.repository.AlertMapper;
+import com.bewellnesspring.alert.model.repository.AlertTypeMapper;
+import com.bewellnesspring.alert.model.vo.AlertType;
 import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
+
 @Service
+@RequiredArgsConstructor
 public class AlertService {
 
     private final AlertMapper alertMapper;
-    private final CertificationMapper dao;
+    private final AlertTypeMapper alertTypeMapper;
+    private final CertificationMapper certificationMapper;
 
-    @Autowired
-    public AlertService(AlertMapper alertMapper, CertificationMapper dao) {
-        this.alertMapper = alertMapper;
-        this.dao = dao;
-    }
     //알림 생성후 db에 저장하기
-    public void createAlert(String userId,String message) {
+    public void createAlert(String userId,String alType,Date alertTime,int scheduled) {
 
-        User user = dao.signIn(userId);
+        User user = certificationMapper.signIn(userId);
+        AlertType alertType = alertTypeMapper.findByAltype(alType);
 
         if(user != null) {
             alertMapper.insertAlert(
+                    alertType.getId(),
                     user.getUserId(),
-                    message
+                    alertTime,
+                    scheduled
             );
         } else {
-            System.out.println("id값을 못 가져왔을때 확인하기 " + userId);
+            System.out.println("id값을 못 가져왔을때 확인하기 userId : "+ userId);
+            System.out.println("id값을 못 가져왔을때 확인하기 altypeId : " + alType);
         }
     }
-
-
 }

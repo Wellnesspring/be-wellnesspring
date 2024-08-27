@@ -33,6 +33,8 @@ mybatis:
     jdbc-type-for-null: null
     map-underscore-to-camel-case: true
 
+
+
 #social
 social:
   kakao:
