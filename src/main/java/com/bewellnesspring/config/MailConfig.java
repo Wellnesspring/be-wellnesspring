@@ -1,4 +1,4 @@
-package com.bewellnesspring.alert.config;
+package com.bewellnesspring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +14,10 @@ public class MailConfig {
     @Bean
     JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.mail.nate.com");
+        mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("yoohwanjoo@nate.com");
-        mailSender.setPassword("aa6842053");
+        mailSender.setUsername("wellnesspring77@gmail.com");
+        mailSender.setPassword("hgmgnkjgytipghww");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

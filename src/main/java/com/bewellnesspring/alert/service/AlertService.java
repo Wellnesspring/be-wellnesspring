@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
-//생성자 방식 변경
 public class AlertService {
 
     private final AlertMapper alertMapper;
@@ -39,8 +38,6 @@ public class AlertService {
             System.out.println("id값을 못 가져왔을때 확인하기 altypeId : " + alType);
         }
     }
-
-
 
 
 }

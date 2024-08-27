@@ -14,7 +14,7 @@
         select * from alert_Type where id = #{typeId}
     </select>
 
-    <select id="findByAltype" parameterType="String" resultType="AlertType">
+    <select id="findByAltype" resultType="AlertType">
         select * from alert_Type where altype = #{altype}
     </select>
 
