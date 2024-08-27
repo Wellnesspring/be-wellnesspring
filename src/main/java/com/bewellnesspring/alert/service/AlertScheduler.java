@@ -15,7 +15,7 @@ public class AlertScheduler {
     private final AlertMapper alertMapper;
     private final EmailService emailService;
 
-    @Scheduled(fixedRate = 60000) // 1분 간격 실행
+//    @Scheduled(fixedRate = 60000) // 1분 간격 실행
     public void checkAlert() {
         System.out.println("checkAlert 메서드 실행중");
         String status = "전송대기";
