@@ -39,28 +39,6 @@ public class AlertScheduler {
                 System.out.println("메일 전송성공!");
             }
         }
-
-
-
-
-//        for (Alert schedule : schedules) {
-//            if (schedule.getScheduled() == 10 ) {
-//                Long alertId = schedule.getId();
-//                String alType = schedule.getAlertType().getAlType();
-//                System.out.println("alType = " + alType);
-//                System.out.println("alertId = " + alertId);
-//                emailService.sendAlertEmail(alertId,alType);
-//                alertMapper.changeStatusToSend(alertId);
-//            } else if (schedule.getScheduled() == 20 ) {
-//                Long alertId = schedule.getId();
-//                String alType = schedule.getAlertType().getAlType();
-//                emailService.sendAlertEmail(alertId,alType);
-//                alertMapper.changeStatusToSend(alertId);
-//            } else {
-//                System.out.println("10분이나 20분 대기중인 알람 없음");
-//
-//            }
-//        }
     }
 
 

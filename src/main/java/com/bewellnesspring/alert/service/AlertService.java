@@ -25,7 +25,6 @@ public class AlertService {
         User user = certificationMapper.signIn(userId);
         AlertType alertType = alertTypeMapper.findByAltype(alType);
 
-
         if(user != null) {
             alertMapper.insertAlert(
                     alertType.getId(),
@@ -38,6 +37,4 @@ public class AlertService {
             System.out.println("id값을 못 가져왔을때 확인하기 altypeId : " + alType);
         }
     }
-
-
 }

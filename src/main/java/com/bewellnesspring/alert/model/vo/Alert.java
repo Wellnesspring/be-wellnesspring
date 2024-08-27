@@ -41,6 +41,7 @@ public class Alert {
         this.alertType = alertType;
     }
 
+    //N분전 알림전송용
     public Alert(Long id, Long typeId, String userId, String readOrNot, LocalDateTime alertTime, Integer scheduled,  String status,String alType, String message1, String message2) {
         this.id = id;
         this.typeId = typeId;
