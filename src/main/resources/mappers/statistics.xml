@@ -19,7 +19,7 @@
         sport_category C ON B.sport_category_id = C.id
         WHERE
         B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND B.routine_start &lt; DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
+        AND B.routine_start $lt; DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
 
     </select>
 
@@ -37,7 +37,7 @@
         LEFT OUTER JOIN plan G ON U.id = G.user_id
         WHERE
         B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND B.routine_start &lt; DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
+        AND B.routine_start $lt; DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
         GROUP BY U.id, DATE(B.routine_start);
 
     </select>
@@ -68,7 +68,7 @@
         LEFT OUTER JOIN plan G ON U.id = G.user_id
         WHERE
         B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND B.routine_start &lt; DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
+        AND B.routine_start $lt; DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
         GROUP BY U.id, DATE(B.routine_start);
     </select>
     <select id="selectLevel" parameterType="map" resultType="map">
@@ -78,7 +78,7 @@
         LEFT OUTER JOIN sport_routine_list A ON A.sport_routine_id = O.id
         LEFT OUTER JOIN sport_category B ON A.sport_category_id = B.id
         WHERE A.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND A.routine_start &lt; DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
+        AND A.routine_start $lt; DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
         GROUP BY O.user_id, B.sport_name
     </select>
     <select id="selectAll" parameterType="map" resultType="map">
@@ -101,7 +101,7 @@
         LEFT OUTER JOIN plan G ON U.id = G.user_id
         WHERE
         B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND B.routine_start &lt; DATE_SUBCURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
+        AND B.routine_start $lt; DATE_SUBCURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
         GROUP BY U.id, DATE(B.routine_start);
     </select>
 

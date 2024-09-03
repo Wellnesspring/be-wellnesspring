@@ -1,9 +1,8 @@
 package com.bewellnesspring.alert.model.vo;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
-import java.util.Date;
+
+import lombok.Data;
 
 @Data
 public class AlertSendDto {

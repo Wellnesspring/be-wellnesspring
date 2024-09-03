@@ -1,12 +1,8 @@
 package com.bewellnesspring.alert.controller;
 
-import com.bewellnesspring.alert.model.repository.AlertMapper;
 import com.bewellnesspring.alert.model.repository.SubscribeMapper;
 import com.bewellnesspring.alert.model.vo.Subscribe;
-import com.bewellnesspring.alert.service.AlertScheduler;
 import com.bewellnesspring.alert.service.AlertService;
-import com.bewellnesspring.alert.service.EmailService;
-import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import nl.martijndwars.webpush.Subscription;
@@ -14,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Date;
 
 @RestController
