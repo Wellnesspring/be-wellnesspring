@@ -1,4 +1,11 @@
 
+INSERT INTO users(
+    user_id,ROLE, user_pw, name, serial_num_f, serial_num_l, phone, height, weight, join_at, alarm_agree, profileImg, point,email)
+VALUES ('user01', 0, 'pw01', '홍길동', '960606','1122334','010-1234-1234',175,70,now(),'동의','img',1,'yoohwanjoo@nate.com');
+
+INSERT INTO users(
+    user_id,ROLE, user_pw, name, serial_num_f, serial_num_l, phone, height, weight, join_at, alarm_agree, profileImg, point,email)
+VALUES ('user02', 0, 'pw02', '김민지', '940202','2122334','010-5678-5678',182,78,now(),'거부','img',1, 'yoohwanjoo@nate.com');
 INSERT INTO social(
     platform, user_id, id_num)
 VALUES ('kakao','user03','1');

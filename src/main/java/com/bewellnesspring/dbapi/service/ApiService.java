@@ -9,6 +9,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -25,7 +27,7 @@ public class ApiService {
 
 
     public String saveSportApi() {
-
+        Logger logger = (Logger) LoggerFactory.getLogger(ApiService.class);
         int affetedRows = 0;
 
         String result = "";
@@ -60,6 +62,7 @@ public class ApiService {
                     affetedRows++;
                 }
             }
+            logger.info(dataArray.toString());
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -67,6 +70,7 @@ public class ApiService {
     }
 
     public String saveFoodApi() {
+        Logger logger = (Logger) LoggerFactory.getLogger(ApiService.class);
 
         int affetedRows = 0;
 
@@ -98,17 +102,18 @@ public class ApiService {
                         null, // id : null로 설정
                         tmp.get("음식명").getAsString(),
                         tmp.get("1인분칼로리(kcal)").getAsDouble(),
-                        tmp.get("나트륨(g)").getAsLong(),
-                        tmp.get("단백질(g)").getAsLong(),
-                        tmp.get("식이섬유(g)").getAsLong(),
-                        tmp.get("지방(g)").getAsLong(),
-                        tmp.get("콜레스트롤(g)").getAsLong(),
-                        tmp.get("탄수화물(g)").getAsLong());
+                        tmp.get("나트륨(g)").getAsDouble(),
+                        tmp.get("단백질(g)").getAsDouble(),
+                        tmp.get("식이섬유(g)").getAsDouble(),
+                        tmp.get("지방(g)").getAsDouble(),
+                        tmp.get("콜레스트롤(g)").getAsDouble(),
+                        tmp.get("탄수화물(g)").getAsDouble());
                 foodCategoryMapper.insertApitoFoodCategory(foodCategory);
                 if (i >= 0) {
                     affetedRows++;
                 }
             }
+            logger.info(dataArray.toString());
         } catch(Exception e){
             e.printStackTrace();
         }
