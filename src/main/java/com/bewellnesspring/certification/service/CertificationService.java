@@ -50,7 +50,14 @@ public class CertificationService implements UserDetailsService {
 
 	public User signIn(Authentication authentication) {
 		try {
-			return userDecoding(dao.signIn(authentication.getName()));
+			User user = userDecoding(dao.signIn(authentication.getName()));
+			return User.builder()
+					.userId(user.getUserId())
+					.rule(user.getRule())
+					.name(user.getName())
+					.alarmAgree(user.getAlarmAgree())
+					.profileImg(user.getProfileImg())
+					.build();
 		} catch (Exception ignored) {return null;}
 	}
 

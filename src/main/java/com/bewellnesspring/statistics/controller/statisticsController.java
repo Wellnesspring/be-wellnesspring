@@ -1,27 +1,26 @@
 package com.bewellnesspring.statistics.controller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import com.bewellnesspring.statistics.service.statisticsService;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bewellnesspring.statistics.service.statisticsService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("dashboard/statistics")
+@RequiredArgsConstructor
 public class statisticsController {
 
     private final Logger logger = LoggerFactory.getLogger(statisticsController.class);
     private final statisticsService statisticsService;
-
-    @Autowired
-    public statisticsController(statisticsService statisticsService) {
-        this.statisticsService = statisticsService;
-    }
 
     @GetMapping("")
     public List<Map<String,Object>> allList(){

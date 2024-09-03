@@ -29,6 +29,7 @@ public class User {
 	@EncodeField
 	private String weight;
 	private Timestamp joinAt;
+	private Timestamp deleteAt;
 	private String alarmAgree;
 	@EncodeField
 	private String profileImg;
