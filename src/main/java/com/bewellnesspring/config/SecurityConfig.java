@@ -29,7 +29,7 @@ public class SecurityConfig {
 				.requestMatchers("/auth/**")
 				.permitAll()
 				.anyRequest()
-				.authenticated()
+				.permitAll()
 				);
 		http.formLogin(formLogin -> formLogin
 //				.loginPage("/auth/signin")

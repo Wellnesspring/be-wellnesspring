@@ -12,9 +12,10 @@
     </select>
 
     <select id="findJoinAlertByType" resultType="Alert">
-        SELECT a.id, a.type_id, a.user_id, a.read_or_not, a.alertTime, a.scheduled, a.status, at.message1, at.message2,at.altype
+        SELECT a.id, a.type_id, a.user_id, a.read_or_not, a.alertTime, a.scheduled, a.status, at.message1, at.message2,at.altype, s.endpoint, s.publicKey, s.authToken
         FROM alert a
         JOIN alert_type at on a.type_id = at.type_id
+        JOIN subscribe s on a.user_id = s.user_id
         where at.altype = #{alType} and a.id = #{id}
     </select>
     
@@ -39,14 +40,18 @@
             <arg column="alType" javaType="String" />
             <arg column="message1" javaType="String"/>
             <arg column="message2" javaType="String"/>
+            <arg column="endPoint" javaType="String"/>
+            <arg column="publicKey" javaType="String"/>
+            <arg column="authToken" javaType="String"/>
         </constructor>
     </resultMap>
 
     <select id="findByTimeAlert" resultMap="AlertResultMap">
-        SELECT a.id, a.type_id, a.user_id, a.read_or_not, a.alertTime, a.scheduled, a.status, at.altype, at.message1, at.message2
+        SELECT a.id, a.type_id, a.user_id, a.read_or_not, a.alertTime, a.scheduled, a.status, at.altype, at.message1, at.message2, s.endPoint, s.publicKey, s.authToken
         from alert a
         JOIN alert_type at on a.type_id = at.type_id
-    where alertTime BETWEEN #{now} AND #{endTime} and status = 'ready';
+        JOIN subscribe s on a.user_id = s.user_id
+        where alertTime BETWEEN #{now} AND #{endTime} and status = 'ready';
     </select>
 
 

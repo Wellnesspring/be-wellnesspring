@@ -17,8 +17,5 @@ public class AlertType {
         this.message2 = message2;
     }
 
-    public AlertType(String message1, String message2) {
-        this.message1 = message1;
-        this.message2 = message2;
-    }
+
 }

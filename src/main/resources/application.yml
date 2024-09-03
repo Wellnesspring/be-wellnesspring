@@ -40,3 +40,14 @@ social:
   kakao:
     api-key: b9f133be5346a55f04808ed817f6a6ca
     redirect-url: http://localhost:9999/auth/kakao
+
+#VAPID
+vapid:
+  public: BP_08ecnW8QMG5Ji2JAYLLL4z5wUces0RRBJ5xHHrKNZ9-2MtkRW_dUWGnIZZ0gTOUQZqtx5lkA-zozkHC_BnQM
+  private: HazUd_f38N55z2ynm1BHTkzvJHVKD-CxcuBvOKG5dZo
+  subject: "http://localhost:3000"
+
+##NewsAPI
+news:
+  api:
+    key: 06a2b14f9f934e9abb71f087d481fe32
