@@ -1,38 +1,26 @@
 package com.bewellnesspring.alert.controller;
 
-import java.util.Date;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bewellnesspring.alert.service.AlertScheduler;
+import com.bewellnesspring.alert.model.repository.SubscribeMapper;
+import com.bewellnesspring.alert.model.vo.Subscribe;
 import com.bewellnesspring.alert.service.AlertService;
-import com.bewellnesspring.alert.service.EmailService;
-import com.bewellnesspring.certification.model.repository.CertificationMapper;
-
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import nl.martijndwars.webpush.Subscription;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/alert")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AlertController {
 
     private final AlertService alertService;
-    private final EmailService emailService;
-    private final CertificationMapper certificationMapper;
-    private final AlertScheduler alertScheduler;
+    private final SubscribeMapper subscribeMapper;
 
-//
-//    @GetMapping("/create")
-//    public String viewHome() {
-//        return "redirect:/index";
-//    }
 
     @PostMapping("/create")
     public ResponseEntity<?> createAlert(@RequestBody AlertCreateRequest request) {
@@ -66,18 +54,29 @@ public class AlertController {
         }
         return ResponseEntity.status(HttpStatus.OK).body("운동 알림이 생성되었습니다.");
     }
-    @GetMapping("send")
-    public ResponseEntity<?> sendAlert() {
-        alertScheduler.checkAlert();
-        return ResponseEntity.status(HttpStatus.OK).body("서버 내에서 1분 간격으로 알림 확인 후 전송중");
+
+    @Value("${vapid.public}")
+    private String vapidPublicKey;
+
+    @GetMapping("/web-push/public-key")
+    public String getVapidPublicKey() {
+        return vapidPublicKey;
     }
 
-//    User user = certificationMapper.signIn(userId를 받아와서 확인을한다라..);
-//        if(user.getAlarmAgree().equals("이메일을 전송하려면 이곳을 '동의' 로 바꾸세요.")){
-//        emailService.sendAlertEmail();
-//    } else {
-//        throw new IllegalArgumentException("알림을 거부한 유저입니다.");
-//    }
+    @PostMapping("/save-subscription")
+    public ResponseEntity<String> saveSubscription(@RequestBody Subscription sub) {
+
+        System.out.println("Subscription received: " + sub);
+
+        String userId = "yoohwanjoo@nate.com";
+        Subscribe subscribe = new Subscribe(userId, sub.endpoint, sub.keys.p256dh, sub.keys.auth);
+
+        subscribeMapper.saveSubscribe(subscribe);
+
+        return ResponseEntity.ok("{\"message\": \"Subscription saved successfully\"}");
+
+    }
+
 }
 
 

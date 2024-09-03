@@ -4,10 +4,15 @@ import com.bewellnesspring.alert.model.repository.AlertMapper;
 import com.bewellnesspring.alert.model.vo.Alert;
 import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.User;
+import jakarta.mail.Message;
+import jakarta.mail.MessageContext;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 
@@ -20,6 +25,8 @@ public class EmailService {
     private final AlertMapper alertMapper;
     private final CertificationMapper certificationMapper;
 
+
+    ///알람 메일로 보내기
     public void sendAlertEmail(Long id, String alType) {
 
         Alert alert = alertMapper.findJoinAlertByType(id,alType);
@@ -29,7 +36,7 @@ public class EmailService {
 
             try{
                 SimpleMailMessage message = new SimpleMailMessage();
-                message.setFrom("yoohwanjoo@nate.com");
+                message.setFrom("wellnesspring77@gmail.com");
                 message.setTo(alert.getUserId());
                 message.setSubject(alType+" 알림이 왔습니다.");
                 message.setText(alert.getAlertType().getMessage1()+
@@ -48,4 +55,17 @@ public class EmailService {
             throw new IllegalArgumentException("알림을 거부한 유저입니다.");
       }
     }
+
+    //api로 가져온 뉴스 메일로 보내기
+    public void sendHtmlMessage(String to, String subject, String htmlBody) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true,"UTF-8");
+
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlBody, true);
+
+        mailSender.send(message);
+    }
+
 }

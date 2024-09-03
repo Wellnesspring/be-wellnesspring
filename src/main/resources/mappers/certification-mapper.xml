@@ -30,4 +30,7 @@
 		        #{locker}
 			   )
 	</insert>
+	<select id="findUserIdWhoAgreeAlram" resultType="user">
+		select user_id from users where alarm_agree = '동의';
+	</select>
 </mapper>
