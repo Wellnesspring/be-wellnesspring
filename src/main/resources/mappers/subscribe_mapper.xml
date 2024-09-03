@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewellnesspring.alert.model.repository.SubscribeMapper">
+
+    <select id="findSubById">
+        SELECT s.id, s.endPoint, s.publicKey, s.authToken, u.user_Id
+        FROM subscribe s
+        JOIN user u on s.user_id = u.user_id
+        where s.id = {id};
+    </select>
+
+    <insert id="saveSubscribe">
+        INSERT INTO Subscribe (user_id, endPoint, publicKey, authToken )
+        VALUES (#{userId}, #{endPoint}, #{publicKey}, #{authToken} )
+    </insert>
+
+
+    <insert id="insertAlert">
+        INSERT INTO alert (type_id,user_id,alertTime,scheduled)
+        VALUES (#{typeId},#{userId}, #{alertTime}, #{scheduled})
+    </insert>
+</mapper>

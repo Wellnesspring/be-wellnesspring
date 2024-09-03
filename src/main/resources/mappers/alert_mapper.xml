@@ -4,11 +4,54 @@
 
     <insert id="insertAlert">
         INSERT INTO alert (type_id,user_id,alertTime,scheduled)
-        VALUES#{typeId},#{userId}, #{alertTime},{scheduled})
+        VALUES (#{typeId},#{userId}, #{alertTime}, #{scheduled})
     </insert>
 
     <select id="findAll">
         select * from alert;
+    </select>
+
+    <select id="findJoinAlertByType" resultType="Alert">
+        SELECT a.id, a.type_id, a.user_id, a.read_or_not, a.alertTime, a.scheduled, a.status, at.message1, at.message2,at.altype, s.endpoint, s.publicKey, s.authToken
+        FROM alert a
+        JOIN alert_type at on a.type_id = at.type_id
+        JOIN subscribe s on a.user_id = s.user_id
+        where at.altype = #{alType} and a.id = #{id}
+    </select>
+    
+    <select id="findAnyAlertNotSend" resultType="Alert">
+        select  a.alertTime, a.scheduled
+        from alert a where a.read_or_not = #{status}
+    </select>
+
+    <update id="changeStatusToSend" parameterType="Long">
+        update alert set status = 'send' where id = #{alertId}
+    </update>
+
+    <resultMap id="AlertResultMap" type="com.bewellnesspring.alert.model.vo.Alert">
+        <constructor>
+            <arg column="id" javaType="Long"/>
+            <arg column="type_id" javaType="Long"/>
+            <arg column="user_id" javaType="String"/>
+            <arg column="read_or_not" javaType="String" />
+            <arg column="alertTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+            <arg column="scheduled" javaType="int"/>
+            <arg column="status" javaType="String"/>
+            <arg column="alType" javaType="String" />
+            <arg column="message1" javaType="String"/>
+            <arg column="message2" javaType="String"/>
+            <arg column="endPoint" javaType="String"/>
+            <arg column="publicKey" javaType="String"/>
+            <arg column="authToken" javaType="String"/>
+        </constructor>
+    </resultMap>
+
+    <select id="findByTimeAlert" resultMap="AlertResultMap">
+        SELECT a.id, a.type_id, a.user_id, a.read_or_not, a.alertTime, a.scheduled, a.status, at.altype, at.message1, at.message2, s.endPoint, s.publicKey, s.authToken
+        from alert a
+        JOIN alert_type at on a.type_id = at.type_id
+        JOIN subscribe s on a.user_id = s.user_id
+        where alertTime BETWEEN #{now} AND #{endTime} and status = 'ready';
     </select>
 
 

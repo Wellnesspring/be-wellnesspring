@@ -1,33 +1,46 @@
 package com.bewellnesspring.certification.service;
 
-import com.bewellnesspring.certification.model.repository.CertificationMapper;
-import com.bewellnesspring.certification.model.vo.EncodeField;
-import com.bewellnesspring.certification.model.vo.User;
-import com.bewellnesspring.common.AESCodec;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.bewellnesspring.certification.model.repository.CertificationMapper;
+import com.bewellnesspring.certification.model.vo.EncodeField;
+import com.bewellnesspring.certification.model.vo.User;
+import com.bewellnesspring.common.AESCodec;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
-public class CertificationService {
+public class CertificationService implements UserDetailsService {
 
-	private final CertificationMapper dao;
 	private final BCryptPasswordEncoder bCryptEncoder;
+	private final CertificationMapper dao;
 
 	@Value("@{social.kakao.api-key}")
 	private String apiKey;
@@ -35,16 +48,17 @@ public class CertificationService {
 	private String redirectUrl;
 
 
-	public User signIn(User u) {
+	public User signIn(Authentication authentication) {
 		try {
-			User dbUser = userDecoding(dao.signIn(u.getUserId()));
-
-//			사용자가 입력한 정보와 db에 있는 내용이 일치하면
-			if (u.getUserId().equals(dbUser.getUserId()) && bCryptEncoder.matches(u.getUserPw(), dbUser.getUserPw())) {
-				return dbUser;
-			}
-		} catch (Exception ignored) {}
-		return null;
+			User user = userDecoding(dao.signIn(authentication.getName()));
+			return User.builder()
+					.userId(user.getUserId())
+					.rule(user.getRule())
+					.name(user.getName())
+					.alarmAgree(user.getAlarmAgree())
+					.profileImg(user.getProfileImg())
+					.build();
+		} catch (Exception ignored) {return null;}
 	}
 
 	public User signIn(int idNum) {
@@ -191,5 +205,25 @@ public class CertificationService {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+
+	/**
+	 * spring security가 내부적으로 로그인할 때 사용하는 메서드(절대 삭제 금지)
+	 * @param username 사용자가 입력한 id
+	 * @return 인증된 사용자임을 증명하는 시큐리티가 발급하는 토큰?
+	 */
+	@Override
+	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+		User user = dao.signIn(userId);
+		GrantedAuthority authority = null;
+
+		if(user == null) {
+			throw new UsernameNotFoundException("User not found");
+		}
+
+		authority = new SimpleGrantedAuthority((user.getRule() == 0)? "ROLE_USER" : "ROLE_ADMIN");
+
+		return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getUserPw(), Collections.singletonList(authority));
 	}
 }

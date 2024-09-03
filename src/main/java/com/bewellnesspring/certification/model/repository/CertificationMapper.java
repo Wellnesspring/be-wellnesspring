@@ -3,6 +3,8 @@ package com.bewellnesspring.certification.model.repository;
 import com.bewellnesspring.certification.model.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface CertificationMapper {
 
@@ -21,4 +23,9 @@ public interface CertificationMapper {
 	boolean signUp(User u);
 
 	User signInAtIdNum(int idNum);
+
+	/*
+	*
+	 */
+	List<User> findUserIdWhoAgreeAlram();
 }

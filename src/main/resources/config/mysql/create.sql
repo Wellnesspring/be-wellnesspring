@@ -5,19 +5,20 @@ create database wellness;
 
 use wellness;
 
-DROP TABLE social CASCADE;
-DROP TABLE Food_Category CASCADE;
-DROP TABLE Food_Like CASCADE;
-DROP TABLE Meal CASCADE;
-DROP TABLE Meal_detail CASCADE;
-DROP TABLE Sport_Category CASCADE;
-DROP TABLE Sport_Like CASCADE;
-DROP TABLE Sport_Routine CASCADE;
-DROP TABLE Sport_Routine_List CASCADE;
-DROP TABLE Weight_Record CASCADE;
-DROP TABLE Alert CASCADE;
-DROP TABLE Alert_type CASCADE;
-DROP TABLE users CASCADE;
+DROP TABLE if exists social;
+DROP TABLE if exists Food_Category;
+DROP TABLE if exists Food_Like;
+DROP TABLE if exists Meal;
+DROP TABLE if exists Meal_detail;
+DROP TABLE if exists Sport_Category;
+DROP TABLE if exists Sport_Like;
+DROP TABLE if exists Sport_Routine;
+DROP TABLE if exists Sport_Routine_List;
+DROP TABLE if exists Weight_Record;
+DROP TABLE if exists Alert;
+DROP TABLE if exists Alert_type;
+DROP TABLE if exists users;
+DROP TABLE if exists PLAN;
 
 CREATE TABLE users(
         user_id 	VARCHAR(50) primary key	NOT NULL,
@@ -113,13 +114,32 @@ CREATE TABLE  Alert  (
          id int auto_increment primary key	NOT NULL,
          type_id 	int,
          user_id 	VARCHAR(50),
-         message varchar(255),
          read_or_not 	varchar(10) DEFAULT 'UNREAD',
-         created_at 	timestamp DEFAULT now()
+         created_at 	timestamp DEFAULT now(),
+         alertTime timestamp,
+         scheduled int
 );
 
 CREATE TABLE  Alert_type  (
           type_id 	int auto_increment primary key	NOT NULL,
-          message 	varchar(255),
-          altype 	varchar(20)	COMMENT '종목별 알림(운동시간,식사알림,목표달성 등)'
+          altype 	varchar(20)	COMMENT '종목별 알림(운동시간,식사알림,목표달성 등)',
+          message1 	varchar(255),
+          message2 	varchar(255)
+
+);
+
+create table Plan (
+    plan_id            int auto_increment primary key,
+    user_id           varchar(50),
+    sport_plan_time    float,
+    sport_plan_type    int,
+    kcal_plan_amount   float,
+    plan_date          datetime,
+#     datetime과 timestamp차이 찾아서 의견나누기
+    na_plan_amount           float,
+    protein_plan_amount      float,
+    fiber_plan_amount        float,
+    fat_plan_amount          int,
+    cholesterol_plan_amount  int,
+    carbohydrate_plan_amount float
 );

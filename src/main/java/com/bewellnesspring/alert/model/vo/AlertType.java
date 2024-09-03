@@ -16,4 +16,6 @@ public class AlertType {
         this.message1 = message1;
         this.message2 = message2;
     }
+
+
 }

@@ -21,7 +21,6 @@
         WHERE
             B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
           AND B.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
-
           AND A.user_id = #{id}
     </select>
 
@@ -43,7 +42,6 @@
         WHERE
         D.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
         AND D.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
-
         AND U.user_id = #{id}
         AND DATE(D.routine_start) = DATE(H.record_at)
         GROUP BY U.user_id, DATE(D.routine_start)
@@ -164,7 +162,6 @@
         AND A.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
         GROUP BY O.user_id
         ) AS Subquery;
-
     </select>
 
 </mapper>

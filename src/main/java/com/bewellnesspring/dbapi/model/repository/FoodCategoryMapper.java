@@ -1,9 +1,8 @@
 package com.bewellnesspring.dbapi.model.repository;
 
-import com.bewellnesspring.dbapi.model.vo.FoodCategory;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+
+import com.bewellnesspring.dbapi.model.vo.FoodCategory;
 
 @Mapper
 public interface FoodCategoryMapper {
