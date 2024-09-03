@@ -3,106 +3,168 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <mapper namespace="com.bewellnesspring.statistics.repository.statisticsRepository">
 
-    <select id="selectSport" parameterType="map" resultType="map">
+    <select id="selectSport" parameterType="String" resultType="java.util.Map">
         SELECT
-        TIMESTAMPDIFF(SECOND, B.routine_start, B.routine_end) / 60.0 AS sport_time,
-        C.sport_name,
-        B.set_count,
-        B.sport_count
+            TIMESTAMPDIFF(SECOND, B.routine_start, B.routine_end) / 60.0 AS sport_time,
+            C.sport_name,
+            B.set_count,
+            B.sport_count
         FROM
-        sport_routine A
-        LEFT OUTER JOIN
-        sport_routine_list B ON A.id = B.sport_routine_id
-        LEFT OUTER JOIN
-        sport_category C ON B.sport_category_id = C.id
+            sport_routine A
+                LEFT OUTER JOIN
+            sport_routine_list B ON A.id = B.sport_routine_id
+                LEFT OUTER JOIN
+            sport_category C ON B.sport_category_id = C.id
         WHERE
-        B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND B.routine_start < DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
+            B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
+          AND B.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
 
+          AND A.user_id = #{id}
     </select>
 
-    <select id="selectKcal" parameterType="map" resultType="map">
-        SELECT sum(B.amount*F.kcal) as meal_kcal,
-        sum(TIMESTAMPDIFF(SECOND, B.routine_start, B.routine_end) /60.0*D.kcal) as sport_kcal,
-        sum(G.kcal_plan_amount) as kcalplan,
+    <select id="selectKcal" parameterType="String" resultType="java.util.Map">
+        SELECT sum(B.amount * F.kcal) AS meal_kcal,
+               sum(TIMESTAMPDIFF(SECOND, D.routine_start, D.routine_end) / 60.0 * F.kcal) AS sport_kcal,
+               sum(G.kcal_plan_amount) AS kcalplan,
+               DATE(D.routine_start) AS today,
+               weight_now AS weight
         FROM users U
-        LEFT OUTER JOIN meal A ON U.id = A.user_id
-        LEFT OUTER JOIN meal_detail B ON A.meal_id = B.meal_id
-        LEFT OUTER JOIN sport_routine C ON A.user_id = C.user_id
-        LEFT OUTER JOIN sport_routine_list D ON C.id = D.sport_routine_id
-        LEFT OUTER JOIN sport_category E ON E.id = D.sport_category_id
-        LEFT OUTER JOIN food_category F ON F.id = B.food_id
-        LEFT OUTER JOIN plan G ON U.id = G.user_id
+                 LEFT OUTER JOIN meal A ON U.user_id = A.user_id
+                 LEFT OUTER JOIN meal_detail B ON A.meal_id = B.meal_id
+                 LEFT OUTER JOIN sport_routine C ON A.user_id = C.user_id
+                 LEFT OUTER JOIN sport_routine_list D ON C.id = D.sport_routine_id
+                 LEFT OUTER JOIN sport_category E ON E.id = D.sport_category_id
+                 LEFT OUTER JOIN food_category F ON F.id = B.food_id
+                 LEFT OUTER JOIN plan G ON U.user_id = G.user_id
+                 LEFT OUTER JOIN weight_record H ON U.user_id = H.user_id
         WHERE
-        B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND B.routine_start < DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
-        GROUP BY U.id, DATE(B.routine_start);
+        D.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
+        AND D.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
 
+        AND U.user_id = #{id}
+        AND DATE(D.routine_start) = DATE(H.record_at)
+        GROUP BY U.user_id, DATE(D.routine_start)
     </select>
 
-    <select id="selectFood" parameterType="map" resultType="map">
-        SELECT sum(B.amount*F.kcal) as meal_kcal,
-        sum(B.amount*F.na) as meal_na,
-        sum(B.amount*F.protein) as meal_protein,
-        sum(B.amount*F.fiber) as meal_fiber,
-        sum(B.amount*F.fat) as meal_fat,
-        sum(B.amount*F.cholesterol) as meal_cholesterol,
-        sum(B.amount*F.carbohydrate) as meal_carbohydrate,
-        sum(TIMESTAMPDIFF(SECOND, B.routine_start, B.routine_end) /60.0*D.kcal) as sport_kcal,
-        sum(G.kcal_plan_amount) as kcalplan,
-        sum(G.na_plan_amount) as naplan,
-        sum(G.protein_plan_amount) as proteinplan,
-        sum(G.fiber_plan_amount) as fiberplan,
-        sum(G.fat_plan_amount) as fatplan,
-        sum(G.cholesterol_plan_amount) as cholesterolplan,
-        sum(G.carbohydrate_plan_amount) as carbohydrateplan,
+    <select id="selectFood" parameterType="String" resultType="java.util.Map">
+        SELECT sum(B.amount * F.kcal) as meal_kcal,
+               sum(B.amount * F.na) as meal_na,
+               sum(B.amount * F.protein) as meal_protein,
+               sum(B.amount * F.fiber) as meal_fiber,
+               sum(B.amount * F.fat) as meal_fat,
+               sum(B.amount * F.cholesterol) as meal_cholesterol,
+               sum(B.amount * F.carbohydrate) as meal_carbohydrate,
+               sum(TIMESTAMPDIFF(SECOND, D.routine_start, D.routine_end) / 60.0 * F.kcal) as sport_kcal,
+               sum(G.kcal_plan_amount) as kcalplan,
+               sum(G.na_plan_amount) as naplan,
+               sum(G.protein_plan_amount) as proteinplan,
+               sum(G.fiber_plan_amount) as fiberplan,
+               sum(G.fat_plan_amount) as fatplan,
+               sum(G.cholesterol_plan_amount) as cholesterolplan,
+               sum(G.carbohydrate_plan_amount) as carbohydrateplan
+
         FROM users U
-        LEFT OUTER JOIN meal A ON U.id = A.user_id
-        LEFT OUTER JOIN meal_detail B ON A.meal_id = B.meal_id
-        LEFT OUTER JOIN sport_routine C ON A.user_id = C.user_id
-        LEFT OUTER JOIN sport_routine_list D ON C.id = D.sport_routine_id
-        LEFT OUTER JOIN sport_category E ON E.id = D.sport_category_id
-        LEFT OUTER JOIN food_category F ON F.id = B.food_id
-        LEFT OUTER JOIN plan G ON U.id = G.user_id
+                 LEFT OUTER JOIN meal A ON U.user_id = A.user_id
+                 LEFT OUTER JOIN meal_detail B ON A.meal_id = B.meal_id
+                 LEFT OUTER JOIN sport_routine C ON A.user_id = C.user_id
+                 LEFT OUTER JOIN sport_routine_list D ON C.id = D.sport_routine_id
+                 LEFT OUTER JOIN sport_category E ON E.id = D.sport_category_id
+                 LEFT OUTER JOIN food_category F ON F.id = B.food_id
+                 LEFT OUTER JOIN plan G ON U.user_id = G.user_id
+
         WHERE
-        B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND B.routine_start < DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
-        GROUP BY U.id, DATE(B.routine_start);
+            D.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
+          AND D.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+         AND U.user_id = #{id}
+        GROUP BY U.user_id, DATE(D.routine_start)
     </select>
-    <select id="selectLevel" parameterType="map" resultType="map">
-        SELECT SUM(TIMESTAMPDIFF(SECOND, B.routine_start, B.routine_end) /60.0) as sport_time,
-               B.sport_name
+
+    <select id="selectLevel" parameterType="String" resultType="java.util.Map">
+        SELECT SUM(TIMESTAMPDIFF(SECOND, A.routine_start, A.routine_end) / 60.0) as sport_time,
+               B.sport_name,
+               C.name,
+               C.user_id
         FROM sport_routine O
-        LEFT OUTER JOIN sport_routine_list A ON A.sport_routine_id = O.id
-        LEFT OUTER JOIN sport_category B ON A.sport_category_id = B.id
-        WHERE A.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND A.routine_start < DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
+                 LEFT OUTER JOIN sport_routine_list A ON A.sport_routine_id = O.id
+                 LEFT OUTER JOIN sport_category B ON A.sport_category_id = B.id
+                 LEFT OUTER JOIN users C ON C.user_id = O.user_id
+        WHERE         A.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
+          AND A.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
         GROUP BY O.user_id, B.sport_name
     </select>
-    <select id="selectAll" parameterType="map" resultMap="map">
-        SELECT sum(B.amount*F.kcal) as meal_kcal,
-        sum(B.amount*F.na) as meal_na,
-        sum(B.amount*F.protein) as meal_protein,
-        sum(B.amount*F.fiber) as meal_fiber,
-        sum(B.amount*F.fat) as meal_fat,
-        sum(B.amount*F.cholesterol) as meal_cholesterol,
-        sum(B.amount*F.carbohydrate) as meal_carbohydrate,
-        sum(TIMESTAMPDIFF(SECOND, B.routine_start, B.routine_end) /60.0*D.kcal) as sport_kcal,
 
+    <select id="selectAll" parameterType="String" resultType="java.util.Map">
+        SELECT sum(B.amount * F.kcal) as meal_kcal,
+               sum(B.amount * F.na) as meal_na,
+               sum(B.amount * F.protein) as meal_protein,
+               sum(B.amount * F.fiber) as meal_fiber,
+               sum(B.amount * F.fat) as meal_fat,
+               sum(B.amount * F.cholesterol) as meal_cholesterol,
+               sum(B.amount * F.carbohydrate) as meal_carbohydrate,
+               sum(TIMESTAMPDIFF(SECOND, D.routine_start, D.routine_end) / 60.0 * F.kcal) as sport_kcal,
+               sum(TIMESTAMPDIFF(SECOND, D.routine_start, D.routine_end) / 60.0) as sport_time,
+               CASE WEEKDAY(D.routine_start) when '0' then '월요일'
+                    when '1' then '화요일'
+                    when '2' then '수요일'
+                    when '3' then '목요일'
+                    when '4' then '금요일'
+                    when '5' then '토요일'
+                    when '6' then '일요일' END AS today
         FROM users U
-        LEFT OUTER JOIN meal A ON U.id = A.user_id
-        LEFT OUTER JOIN meal_detail B ON A.meal_id = B.meal_id
-        LEFT OUTER JOIN sport_routine C ON A.user_id = C.user_id
-        LEFT OUTER JOIN sport_routine_list D ON C.id = D.sport_routine_id
-        LEFT OUTER JOIN sport_category E ON E.id = D.sport_category_id
-        LEFT OUTER JOIN food_category F ON F.id = B.food_id
-        LEFT OUTER JOIN plan G ON U.id = G.user_id
+                 LEFT OUTER JOIN meal A ON U.user_id = A.user_id
+                 LEFT OUTER JOIN meal_detail B ON A.meal_id = B.meal_id
+                 LEFT OUTER JOIN sport_routine C ON A.user_id = C.user_id
+                 LEFT OUTER JOIN sport_routine_list D ON C.id = D.sport_routine_id
+                 LEFT OUTER JOIN sport_category E ON E.id = D.sport_category_id
+                 LEFT OUTER JOIN food_category F ON F.id = B.food_id
+                 LEFT OUTER JOIN plan G ON U.user_id = G.user_id
         WHERE
-        B.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
-        AND B.routine_start < DATE_SUBCURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
-        GROUP BY U.id, DATE(B.routine_start);
+            D.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
+          AND D.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+          AND A.meal_time >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
+          AND A.meal_time &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+
+          AND U.user_id = #{id}
+        GROUP BY U.user_id, DATE(D.routine_start)
+    </select>
+
+    <select id="selectAvg" parameterType="String" resultType="java.util.Map">
+        SELECT
+        AVG(Average_sport_time) as Average_sport_time,
+        AVG(Average_meal_kcal) as Average_meal_kcal,
+        AVG(meal_na) as Average_meal_na,
+        AVG(meal_protein) as Average_meal_protein,
+        AVG(meal_fiber) as Average_meal_fiber,
+        AVG(meal_fat) as Average_meal_fat,
+        AVG(meal_cholesterol) as Average_meal_cholesterol,
+        AVG(meal_carbohydrate) as Average_meal_carbohydrate
+        FROM (
+        SELECT
+        SUM(TIMESTAMPDIFF(SECOND, A.routine_start, A.routine_end) / 60.0) as Average_sport_time,
+        SUM(E.amount * F.kcal) as Average_meal_kcal,
+        SUM(E.amount * F.na) as meal_na,
+        SUM(E.amount * F.protein) as meal_protein,
+        SUM(E.amount * F.fiber) as meal_fiber,
+        SUM(E.amount * F.fat) as meal_fat,
+        SUM(E.amount * F.cholesterol) as meal_cholesterol,
+        SUM(E.amount * F.carbohydrate) as meal_carbohydrate
+        FROM
+        sport_routine O
+        LEFT OUTER JOIN sport_routine_list A ON A.sport_routine_id = O.id
+        LEFT OUTER JOIN sport_category B ON A.sport_category_id = B.id
+        LEFT OUTER JOIN users C ON C.user_id = O.user_id
+        LEFT OUTER JOIN meal D ON O.user_id = D.user_id
+        LEFT OUTER JOIN meal_detail E ON D.meal_id = E.meal_id
+        LEFT OUTER JOIN food_category F ON F.id = E.food_id
+        WHERE
+        A.routine_start >= DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 7) DAY)
+        AND A.routine_start &lt; DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+        GROUP BY O.user_id
+        ) AS Subquery;
+
     </select>
 
 </mapper>
