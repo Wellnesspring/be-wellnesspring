@@ -1,12 +1,14 @@
 package com.bewellnesspring.alert.service;
 
-import com.bewellnesspring.alert.model.repository.AlertMapper;
-import com.bewellnesspring.alert.model.vo.Alert;
-import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.bewellnesspring.alert.model.repository.AlertMapper;
+import com.bewellnesspring.alert.model.vo.Alert;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
