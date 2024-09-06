@@ -10,17 +10,15 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.session.SimpleRedirectInvalidSessionStrategy;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.bewellnesspring.certification.filter.JsonLoginFilter;
 import com.bewellnesspring.certification.service.CertificationService;
-import com.bewellnesspring.common.JsonLoginFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -57,9 +55,7 @@ public class SecurityConfig {
 				.permitAll()
 				);
 		http.sessionManagement(session -> session
-				.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-				.invalidSessionStrategy(new SimpleRedirectInvalidSessionStrategy("/auth/signin"))
-//				.maximumSessions(2)
+				.maximumSessions(2)
 				);
 		return http.build();
 	}

@@ -1,22 +1,25 @@
-package com.bewellnesspring.common;
+package com.bewellnesspring.certification.filter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StreamUtils;
 
+import com.bewellnesspring.certification.model.vo.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -37,20 +40,18 @@ public class JsonLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
-		if(request.getContentType() == null || !request.getContentType().equals("application/json")  ) {
+		if(request.getContentType() == null || !request.getContentType().equals(MimeTypeUtils.APPLICATION_JSON_VALUE)  ) {
 			throw new AuthenticationServiceException("Authentication Content-Type not supported: " + request.getContentType());
 		}
 		
 		String messageBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
 		
 		// JSON 요청에서 로그인 정보를 추출
-	    Map<String, String> credentials = objectMapper.readValue(messageBody, Map.class);
-	    String userId = credentials.get("userId");
-	    String userPw = credentials.get("userPw");
-	
+	    User idPw = objectMapper.readValue(messageBody, User.class);
+	    
 	    // UsernamePasswordAuthenticationToken 생성
-	    UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(userId, userPw);
-	
+	    UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(idPw.getUserId(), idPw.getUserPw());
+
 	    // 인증 시도
 	    return this.getAuthenticationManager().authenticate(authRequest);
 	}
@@ -67,11 +68,31 @@ public class JsonLoginFilter extends AbstractAuthenticationProcessingFilter {
 		 // 권한 검사
 	    boolean isUser = authResult.getAuthorities().stream()
 	            .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
+	    
 	    if(!isUser) {
 	    	unsuccessfulAuthentication(request, response, new BadCredentialsException("The authenticated authority is " + authResult.getName()));
 	    }
-		SecurityContextHolder.getContext().setAuthentication(authResult);
-		response.sendRedirect("/auth/signinOk");
+	    
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+		securityContext.setAuthentication(authResult);
+		
+		// 세션 관리
+        if (request.getSession(false) == null) {
+            request.getSession(true);
+        }
+        request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+
+        // 세션 ID 쿠키 설정 (세션 관리가 활성화된 경우)
+        Cookie sessionCookie = new Cookie("JSESSIONID", request.getSession().getId());
+        sessionCookie.setPath("/");
+        sessionCookie.setHttpOnly(true);
+        response.addCookie(sessionCookie);
+        
+        if (!response.isCommitted()) {
+            response.sendRedirect("/auth/signinOk");
+        } else {
+            System.err.println("Response already committed. Cannot perform redirect.");
+        }
 	}
 
 	/**

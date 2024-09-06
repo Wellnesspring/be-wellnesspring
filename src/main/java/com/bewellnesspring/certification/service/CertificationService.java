@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.EncodeField;
 import com.bewellnesspring.certification.model.vo.User;
+import com.bewellnesspring.certification.model.vo.UserFront;
 import com.bewellnesspring.common.AESCodec;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -48,16 +49,10 @@ public class CertificationService implements UserDetailsService {
 	private String redirectUrl;
 
 
-	public User signIn(Authentication authentication) {
+	public UserFront signIn(Authentication authentication) {
 		try {
 			User user = userDecoding(dao.signIn(authentication.getName()));
-			return User.builder()
-					.userId(user.getUserId())
-					.rule(user.getRule())
-					.name(user.getName())
-					.alarmAgree(user.getAlarmAgree())
-					.profileImg(user.getProfileImg())
-					.build();
+			return new UserFront(user);
 		} catch (Exception ignored) {return null;}
 	}
 

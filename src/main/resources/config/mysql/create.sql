@@ -31,9 +31,10 @@ CREATE TABLE users(
         height 	varchar(100),
         weight 	varchar(100),
         join_at 	timestamp DEFAULT now() COMMENT '회원 가입일자', #now() : insert 시점의 날짜 데이터 삽입 (초까지)
+        deleteAt	timestamp,
         alarm_agree 	varchar(10) COMMENT '동의,거부',
         profileImg 	varchar(100),
-        point 	int,
+        point 	int DEFAULT 0,
         locker varchar(100) NOT NULL
 );
 
