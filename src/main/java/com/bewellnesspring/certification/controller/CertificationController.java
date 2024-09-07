@@ -43,11 +43,18 @@ public class CertificationController {
 	public ResponseEntity<Object> signUp(@RequestBody User u) {
 		return new ResponseEntity<>(service.signUp(u) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+	
+	/**
+	 * 로그아웃 성공 후 실행되는 메서드
+	 * @param u 사용자가 입력한 id, pw
+	 * @return 해당 아이디로 검색된 사용자 정보
+	 * @todo 나중에 사용자 정보들을 그때 그때 필요한 내용을 가져다 쓸건지 아니면 로그인시 한번에 주고 말건지 정해야함
+	 */
 	@GetMapping("signoutOk")
 	public ResponseEntity<String> signOut() {
 		return ResponseEntity.ok("Log Out Successed");
 	}
+	
 	/**
 	 * 카카오 계정을 이용한 로그인
 	 * @param code 사용자가 카카오에 요청하여 받아온 인증코드

@@ -1,12 +1,12 @@
 package com.bewellnesspring.alert.model.repository;
 
-import com.bewellnesspring.alert.model.vo.Alert;
-import com.bewellnesspring.alert.model.vo.AlertSendDto;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.bewellnesspring.alert.model.vo.Alert;
 
 @Mapper
 public interface AlertMapper {

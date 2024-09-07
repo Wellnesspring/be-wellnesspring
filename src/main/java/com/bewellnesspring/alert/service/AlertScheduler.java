@@ -1,20 +1,25 @@
 package com.bewellnesspring.alert.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.bewellnesspring.alert.model.repository.AlertMapper;
 import com.bewellnesspring.alert.model.vo.Alert;
 import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.User;
 import jakarta.mail.MessagingException;
-import lombok.RequiredArgsConstructor;
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
+import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
