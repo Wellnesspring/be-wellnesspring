@@ -26,7 +26,7 @@ CREATE TABLE users(
         user_pw 	varchar(100) NOT NULL,
         name 	varchar(100) NOT NULL,
         serial_num_f 	varchar(100) NOT NULL	COMMENT '성별값까지 7자리 저장',
-        serial_num_l 	varchar(100) NOT NULL	COMMENT '추후 암호화 생각중',
+        serial_num_l 	varchar(100),
         phone 	varchar(100) NOT NULL,
         height 	varchar(100),
         weight 	varchar(100),

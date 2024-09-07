@@ -48,7 +48,6 @@ public class CertificationService implements UserDetailsService {
 	@Value("@{social.kakao.redirect-url}")
 	private String redirectUrl;
 
-
 	public UserFront signIn(Authentication authentication) {
 		try {
 			User user = userDecoding(dao.signIn(authentication.getName()));
@@ -56,9 +55,10 @@ public class CertificationService implements UserDetailsService {
 		} catch (Exception ignored) {return null;}
 	}
 
-	public User signIn(int idNum) {
+	public UserFront signIn(int idNum) {
 		try {
-			return userDecoding(dao.signInAtIdNum(idNum));
+			User user = userDecoding(dao.signInAtIdNum(idNum));
+			return new UserFront(user);
 		} catch (Exception ignored) {}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class CertificationService implements UserDetailsService {
 		}
 	}
 
-	public User useKakao(String code, String state) {
+	public UserFront useKakao(String code, String state) {
 		if(state.equals("wellnesspring") && code != null && !code.isEmpty()) {
 			int idNum = getUserFromKakao(getTokenFromKakao(code));
 			return signIn(idNum);
@@ -201,7 +201,6 @@ public class CertificationService implements UserDetailsService {
 			throw new RuntimeException(e);
 		}
 	}
-
 
 	/**
 	 * spring security가 내부적으로 로그인할 때 사용하는 메서드(절대 삭제 금지)

@@ -63,8 +63,8 @@ public class CertificationController {
 	 * @return 사용자 정보
 	 */
 	@GetMapping("/kakao")
-	public ResponseEntity<User> useKakao(@RequestParam String code, @RequestParam String state) {
-		User u = service.useKakao(code, state);
+	public ResponseEntity<UserFront> useKakao(@RequestParam String code, @RequestParam String state) {
+		UserFront u = service.useKakao(code, state);
 		return u != null ? ResponseEntity.ok(u) : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	}
 }
