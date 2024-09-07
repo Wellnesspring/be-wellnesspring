@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewellnesspring.sport.model.repository.SportPlanMapper">
+
+    <insert id="savePlan" parameterType="SportPlan" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO sport_plan (user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
+     VALUES (#{userId}, #{total_sport_start}, #{total_sport_end}, #{total_duration}, #{total_burn_kcal})
+    </insert>
+    <update id="updatePlan" parameterType="SportPlan">
+        UPDATE sport_plan
+        set total_sport_start = #{total_sport_start},
+        total_sport_end = #{total_sport_end},
+        total_duration = #{total_duration},
+        total_burn_kcal = #{total_burn_kcal}
+        where id = #{id}
+    </update>
+    <insert id="savePlanItem" parameterType="SportPlanItem">
+    INSERT INTO sport_plan_item (sport_plan_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+     VALUES (#)
+    </insert>
+
+</mapper>

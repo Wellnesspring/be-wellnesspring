@@ -135,7 +135,7 @@ create table Plan (
     sport_plan_type    int,
     kcal_plan_amount   float,
     plan_date          datetime,
-#     datetime과 timestamp차이 찾아서 의견나누기
+-- #     datetime과 timestamp차이 찾아서 의견나누기
     na_plan_amount           float,
     protein_plan_amount      float,
     fiber_plan_amount        float,
@@ -143,3 +143,50 @@ create table Plan (
     cholesterol_plan_amount  int,
     carbohydrate_plan_amount float
 );
+
+drop table if exists sport_plan;
+
+drop table if exists sport_record;
+
+CREATE TABLE  Sport_Record  (
+     id 	int auto_increment primary key	NOT NULL,
+     user_id 	VARCHAR(50)	NULL,
+     sport_plan_id 	int	NULL,
+     total_sport_start 	timestamp	NULL,
+     total_sport_end 	timestamp	NULL,
+     total_duration 	int	NULL,
+     total_burn_kcal 	float	NULL
+);
+
+
+CREATE TABLE  Sport_plan  (
+   id 	int auto_increment primary key	NOT NULL,
+   user_id 	VARCHAR(50)	NULL,
+   total_sport_start 	timestamp	NULL,
+   total_sport_end 	timestamp	NULL,
+   total_duration 	int	NULL,
+   total_burn_kcal 	float	NULL
+);
+
+CREATE TABLE  Sport_Record_Item  (
+          id 	int auto_increment primary key	NOT NULL,
+          sport_record_id 	int	NULL,
+          sport_category_id 	int	NULL	COMMENT '한국건강증진개발원_보건소 모바일 헬스케어 운동 api',
+          sport_start 	timestamp	NULL,
+          sport_end 	timestamp	NULL,
+          duration 	int	NULL,
+          burn_kcal 	float	NULL
+);
+
+CREATE TABLE  Sport_Plan_Item  (
+        id 	int auto_increment primary key	NOT NULL,
+        sport_plan_id 	int	NULL,
+        sport_category_id 	int	NULL	COMMENT '한국건강증진개발원_보건소 모바일 헬스케어 운동 api',
+        sport_start 	timestamp	NULL,
+        sport_end 	timestamp	NULL,
+        duration 	int	NULL,
+        burn_kcal 	float	NULL
+);
+
+
+
