@@ -3,6 +3,7 @@ package com.bewellnesspring.sport.model.vo;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class SportRecord {
@@ -14,5 +15,6 @@ public class SportRecord {
     private LocalDateTime total_sport_end; //실제 운동 종료시간
     private int total_duration; // 실제 운동소요시간
     private double total_burn_kcal; //실제 소모칼로리
+    private List<SportItem> sportItem;
 
 }

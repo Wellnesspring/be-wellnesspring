@@ -5,11 +5,12 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class SportPlanItem {
+public class SportItem {
 
     private Long id;
     private String userId;
     private Long sport_plan_id;
+    private Long sport_record_id;
     private Long sport_category_id;
     private LocalDateTime sport_start;
     private LocalDateTime sport_end; //예상 운동종료시간

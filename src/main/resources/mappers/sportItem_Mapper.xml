@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewellnesspring.sport.model.repository.SportItemMapper">
+
+    <!-- 운동계획저장   -->
+    <insert id="savePlanItem" parameterType="SportItem" >
+    INSERT INTO sport_plan_item (sport_plan_id, sport_category_id, sport_start, sport_end, duration, burn_kcal )
+     VALUES (#{sport_plan_id}, #{sport_category_id}, #{sport_start}, #{sport_end}, #{duration}, #{burn_kcal})
+    </insert>
+
+    <select id="findByPlanId" parameterType="SportItem" >--  resultType생각하기
+    SELECT * FROM sport_plan_item where sport_plan_id = #{sport_plan_id}
+    </select>
+
+    <!-- 운동기록저장  -->
+    <insert id="saveRecordItem" parameterType="SportItem">
+        INSERT INTO sport_record_item (sport_record_id, sport_category_id, sport_start, sport_end, duration, burn_kcal )
+        VALUES (#{sport_record_id}, #{sport_category_id}, #{sport_start}, #{sport_end}, #{duration}, #{burn_kcal})
+    </insert>
+
+
+
+</mapper>

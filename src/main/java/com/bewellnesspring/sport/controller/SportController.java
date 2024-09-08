@@ -1,6 +1,7 @@
 package com.bewellnesspring.sport.controller;
 
 import com.bewellnesspring.sport.Service.SportPlanService;
+import com.bewellnesspring.sport.Service.SportRecordService;
 import com.bewellnesspring.sport.model.vo.SportDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,13 +17,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class SportController {
 
     private final SportPlanService sportPlanService;
+    private final SportRecordService sportRecordService;
 
 
-    @PostMapping("/save/sport-plan")
+    @PostMapping("/save/plan")
     private ResponseEntity<?> saveSportPlan(@RequestBody SportDTO sportDTO) {
 
         sportPlanService.planSave(sportDTO);
         return ResponseEntity.status(HttpStatus.OK).body("운동계획 저장완료");
+    }
+
+    @PostMapping("/save/record")
+    private ResponseEntity<?> saveSportRecord(@RequestBody SportDTO sportDTO) {
+
+        sportRecordService.recordSave(sportDTO);
+        return ResponseEntity.status(HttpStatus.OK).body("운동기록 저장완료");
+    }
+
+    @PostMapping("/modify/record")
+    private ResponseEntity<?> modifySportplan(@RequestBody SportDTO sportDTO) {
+
+        sportRecordService.recordSave(sportDTO);
+        return ResponseEntity.status(HttpStatus.OK).body("운동계획 수정완료");
     }
 
 }
