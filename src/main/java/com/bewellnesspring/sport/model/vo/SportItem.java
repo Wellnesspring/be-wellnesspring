@@ -9,13 +9,13 @@ public class SportItem {
 
     private Long id;
     private String userId;
-    private Long sport_plan_id;
-    private Long sport_record_id;
-    private Long sport_category_id;
-    private LocalDateTime sport_start;
-    private LocalDateTime sport_end; //예상 운동종료시간
+    private Long sportPlanId;
+    private Long sportRecordId;
+    private Long sportCategoryId;
+    private LocalDateTime sportStart;
+    private LocalDateTime sportEnd; //예상 운동종료시간
     private int duration; //예상 운동 소요시간
-    private double burn_kcal; //예상 소모칼로리
+    private double burnKcal; //예상 소모칼로리
 
 
 }

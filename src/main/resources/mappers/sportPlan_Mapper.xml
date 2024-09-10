@@ -4,19 +4,22 @@
 
     <insert id="savePlan" parameterType="SportPlan" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO sport_plan (user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
-     VALUES (#{userId}, #{total_sport_start}, #{total_sport_end}, #{total_duration}, #{total_burn_kcal})
+     VALUES (#{userId}, #{totalSportStart}, #{totalSportEnd}, #{totalDuration}, #{totalBurnKcal})
     </insert>
     <update id="updatePlan" parameterType="SportPlan">
         UPDATE sport_plan
-        set total_sport_start = #{total_sport_start},
-        total_sport_end = #{total_sport_end},
-        total_duration = #{total_duration},
-        total_burn_kcal = #{total_burn_kcal}
+        set total_sport_start = #{totalSportStart},
+        total_sport_end = #{totalSportEnd},
+        total_duration = #{totalDuration},
+        total_burn_kcal = #{totalBurnKcal}
         where id = #{id}
     </update>
-    <insert id="savePlanItem" parameterType="SportPlanItem">
-    INSERT INTO sport_plan_item (sport_plan_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
-     VALUES (#)
-    </insert>
+    <select id="findPlanById" parameterType="Long" resultType="SportPlan">
+        select * from sport_plan where id = #{id}
+    </select>
+    <delete id="deletePlan" parameterType="Long">
+        DELETE FROM sport_plan where id = #{id}
+    </delete>
+
 
 </mapper>

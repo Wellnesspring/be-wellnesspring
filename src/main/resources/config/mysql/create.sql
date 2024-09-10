@@ -19,6 +19,8 @@ DROP TABLE if exists Alert;
 DROP TABLE if exists Alert_type;
 DROP TABLE if exists users;
 DROP TABLE if exists PLAN;
+DROP TABLE if exists sport_plan;
+DROP TABLE if exists sport_record;
 
 CREATE TABLE users(
         user_id 	VARCHAR(50) primary key	NOT NULL,
@@ -135,7 +137,6 @@ create table Plan (
     sport_plan_type    int,
     kcal_plan_amount   float,
     plan_date          datetime,
--- #     datetime과 timestamp차이 찾아서 의견나누기
     na_plan_amount           float,
     protein_plan_amount      float,
     fiber_plan_amount        float,
@@ -143,10 +144,6 @@ create table Plan (
     cholesterol_plan_amount  int,
     carbohydrate_plan_amount float
 );
-
-drop table if exists sport_plan;
-
-drop table if exists sport_record;
 
 CREATE TABLE  Sport_Record  (
      id 	int auto_increment primary key	NOT NULL,

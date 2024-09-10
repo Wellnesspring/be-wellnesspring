@@ -5,19 +5,40 @@
     <!-- 운동계획저장   -->
     <insert id="savePlanItem" parameterType="SportItem" >
     INSERT INTO sport_plan_item (sport_plan_id, sport_category_id, sport_start, sport_end, duration, burn_kcal )
-     VALUES (#{sport_plan_id}, #{sport_category_id}, #{sport_start}, #{sport_end}, #{duration}, #{burn_kcal})
+     VALUES (#{sportPlanId}, #{sportCategoryId}, #{sportStart}, #{sportEnd}, #{duration}, #{burnKcal})
     </insert>
 
-    <select id="findByPlanId" parameterType="SportItem" >--  resultType생각하기
-    SELECT * FROM sport_plan_item where sport_plan_id = #{sport_plan_id}
+    <select id="findByPlanId" parameterType="Long" resultType="SportItem" >
+        SELECT
+            id,
+            sport_plan_id,
+            sport_record_id,
+            sport_category_id,
+            sport_start,
+            sport_end,
+            duration,
+            burn_kcal
+        FROM sport_plan_item
+        WHERE sport_plan_id = #{sportPlanId}
     </select>
 
     <!-- 운동기록저장  -->
     <insert id="saveRecordItem" parameterType="SportItem">
         INSERT INTO sport_record_item (sport_record_id, sport_category_id, sport_start, sport_end, duration, burn_kcal )
-        VALUES (#{sport_record_id}, #{sport_category_id}, #{sport_start}, #{sport_end}, #{duration}, #{burn_kcal})
+        VALUES (#{sportRecordId}, #{sportCategoryId}, #{sportStart}, #{sportEnd}, #{duration}, #{burnKcal})
     </insert>
 
+    <!-- 운동계획 수정 할 때 데이터 삭제 후 다시 저장하는방식   -->
+    <delete id="deletePlanItem" parameterType="Long">
+        DELETE FROM sport_plan_item where sport_plan_id = #{planId}
+    </delete>
 
+    <delete id="deleteRecordItem" parameterType="Long">
+        DELETE FROM sport_record_item where sport_record_id = #{recordId}
+    </delete>
+
+    <select id="selectByPlanId" parameterType="Long" resultType="SportItem">
+        SELECT * FROM sport_plan_item where sport_plan_id = #{planId}
+    </select>
 
 </mapper>

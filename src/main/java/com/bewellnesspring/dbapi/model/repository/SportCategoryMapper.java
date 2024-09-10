@@ -15,4 +15,6 @@ public interface SportCategoryMapper {
 
     SportCategory findByName(String SportName);
 
+    SportCategory findById(Long id);
+
 }

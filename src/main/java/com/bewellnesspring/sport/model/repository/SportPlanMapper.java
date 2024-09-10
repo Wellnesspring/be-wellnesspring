@@ -12,4 +12,8 @@ public interface SportPlanMapper {
 
     void updatePlan(SportPlan sportPlan);
 
+    SportPlan findPlanById(Long id);
+
+    void deletePlan(Long id);
+
 }

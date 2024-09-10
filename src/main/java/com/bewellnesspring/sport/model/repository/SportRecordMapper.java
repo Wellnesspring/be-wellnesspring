@@ -12,4 +12,10 @@ public interface SportRecordMapper {
 
     void updateRecord(SportRecord sportRecord);
 
+    SportRecord findRecordById(Long id);
+
+    void deleteRecord(Long id);
+
+
+
 }
