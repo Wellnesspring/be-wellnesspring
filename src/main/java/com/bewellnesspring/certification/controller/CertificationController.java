@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bewellnesspring.certification.model.vo.User;
+import com.bewellnesspring.certification.model.vo.UserFront;
 import com.bewellnesspring.certification.service.CertificationService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class CertificationController {
 	 * @todo 나중에 사용자 정보들을 그때 그때 필요한 내용을 가져다 쓸건지 아니면 로그인시 한번에 주고 말건지 정해야함
 	 */
 	@GetMapping("/signinOk")
-	public ResponseEntity<User> signIn() {
-		User dbUser = service.signIn(SecurityContextHolder.getContext().getAuthentication());
+	public ResponseEntity<UserFront> signIn() {
+		UserFront dbUser = service.signIn(SecurityContextHolder.getContext().getAuthentication());
 		return ResponseEntity.ok(dbUser);
 	}
 
@@ -62,8 +63,8 @@ public class CertificationController {
 	 * @return 사용자 정보
 	 */
 	@GetMapping("/kakao")
-	public ResponseEntity<User> useKakao(@RequestParam String code, @RequestParam String state) {
-		User u = service.useKakao(code, state);
+	public ResponseEntity<UserFront> useKakao(@RequestParam String code, @RequestParam String state) {
+		UserFront u = service.useKakao(code, state);
 		return u != null ? ResponseEntity.ok(u) : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	}
 }

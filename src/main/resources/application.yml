@@ -22,6 +22,13 @@ spring:
 server:
   servlet:
     context-path: /
+#    인증된 사용자를 의미하는 쿠기 등록 관련 설정(개발 중 CrossOrigin 문제 때문)
+    session:
+      cookie:
+        name: JSESSIONID
+        http-only: true
+        secure: true
+        same-site: none
 #port
   port: 9999
 

@@ -16,17 +16,13 @@
 	</select>
 
 	<insert id="signUp" parameterType="user">
-		INSERT INTO USERS(user_id, user_pw, name, serial_num_l, serial_num_f, phone, height, weight, profileImg, locker)
+		INSERT INTO USERS(user_id, user_pw, name, serial_num_f, phone, locker)
 		VALUES (
 		        #{userId},
                 #{userPw},
                 #{name},
-                #{serialNumL},
                 #{serialNumF},
                 #{phone},
-                #{height},
-                #{weight},
-                #{profileImg},
 		        #{locker}
 			   )
 	</insert>

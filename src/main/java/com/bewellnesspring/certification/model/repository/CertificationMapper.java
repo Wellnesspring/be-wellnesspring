@@ -14,6 +14,8 @@ public interface CertificationMapper {
 	 * @return 해당 아이디로 검색된 사용자 정보
 	 */
 	User signIn(String userId);
+	
+	User signInAtIdNum(int idNum);
 
 	/**
 	 * 새 사용자 등록
@@ -21,8 +23,6 @@ public interface CertificationMapper {
 	 * @return 등록 성공 여부
 	 */
 	boolean signUp(User u);
-
-	User signInAtIdNum(int idNum);
 
 	/*
 	*
