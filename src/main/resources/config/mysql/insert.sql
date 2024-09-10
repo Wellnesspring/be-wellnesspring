@@ -30,7 +30,6 @@ INSERT INTO Meal_detail
 (meal_id, food_id, meal, amount)
 VALUES (1, 1, '바나나', 2);
 
-
 INSERT INTO Sport_category
 (sport_name, kcal)
 VALUES ('축구', 2.5);
@@ -42,14 +41,6 @@ VALUES ('수영', 1.5);
 INSERT INTO Sport_Like
 (sport_category_id, liked_at)
 VALUES (1, now());
-
-INSERT INTO Sport_Routine
-(user_id, sport_routine_name)
-VALUES ('user01', '수영');
-
-INSERT INTO Sport_Routine_List
-(sport_routine_id, sport_category_id, set_count, sport_count, volume, routine_start, routine_end)
-VALUES (1, 1, 2, 3, 30, now(), '2024-08-30 15:00:00');
 
 INSERT INTO Weight_record
 (user_id, weight_now, record_at)
@@ -80,3 +71,51 @@ INSERT INTO Plan
 (user_id, sport_plan_time, sport_plan_type, kcal_plan_amount, plan_date, protein_plan_amount,
  fiber_plan_amount, fat_plan_amount, cholesterol_plan_amount, carbohydrate_plan_amount )
 VALUES ('user01',10,1,1500,2024-08-27T12:47:00,20,10,15,15,15,15);
+
+INSERT INTO sport_plan
+(user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
+VALUES ('user01', 2024-09-15T10:30:00, 2024-09-15T16:30:00, 340, 2280);
+
+INSERT INTO sport_plan
+(user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
+VALUES ('user01', 2024-09-13T16:30:00, 2024-09-15T18:30:00, 120, 330 );
+
+INSERT INTO sport_plan_item
+(sport_plan_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+VALUES (1,185,2024-09-15T10:30:00, 2024-09-15T13:30:00, 100, 600);
+
+INSERT INTO sport_plan_item
+(sport_plan_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+VALUES (1,101,2024-09-15T14:50:00, 2024-09-15T16:30:00, 180, 1260);
+
+INSERT INTO sport_plan_item
+(sport_plan_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+VALUES (2,3,2024-09-20T12:30:00, 2024-09-20T13:30:00, 60, 150);
+
+INSERT INTO sport_plan_item
+(sport_plan_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+VALUES (2,13,2024-09-20T17:30:00, 2024-09-20T18:30:00, 60, 180);
+
+INSERT INTO sport_record
+(user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
+VALUES ('user01', 2024-09-15T10:30:00, 2024-09-15T16:30:00, 340, 2280);
+
+INSERT INTO sport_record
+(user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
+VALUES ('user01', 2024-09-13T16:30:00, 2024-09-15T18:30:00, 120, 330 );
+
+INSERT INTO sport_record_item
+(sport_record_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+VALUES (1,185,2024-09-15T10:30:00, 2024-09-15T13:30:00, 100, 600);
+
+INSERT INTO sport_record_item
+(sport_record_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+VALUES (1,101,2024-09-15T14:50:00, 2024-09-15T16:30:00, 180, 1260);
+
+INSERT INTO sport_record_item
+(sport_record_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+VALUES (2,3,2024-09-20T12:30:00, 2024-09-20T13:30:00, 60, 150);
+
+INSERT INTO sport_record_item
+(sport_record_id, sport_category_id, sport_start, sport_end, duration, burn_kcal)
+VALUES (2,13,2024-09-20T17:30:00, 2024-09-20T18:30:00, 60, 180);

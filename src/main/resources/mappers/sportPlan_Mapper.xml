@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewellnesspring.sport.model.repository.SportPlanMapper">
+
+    <insert id="savePlan" parameterType="SportPlan" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO sport_plan (user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
+     VALUES (#{userId}, #{totalSportStart}, #{totalSportEnd}, #{totalDuration}, #{totalBurnKcal})
+    </insert>
+    <update id="updatePlan" parameterType="SportPlan">
+        UPDATE sport_plan
+        set total_sport_start = #{totalSportStart},
+        total_sport_end = #{totalSportEnd},
+        total_duration = #{totalDuration},
+        total_burn_kcal = #{totalBurnKcal}
+        where id = #{id}
+    </update>
+    <select id="findPlanById" parameterType="Long" resultType="SportPlan">
+        select * from sport_plan where id = #{id}
+    </select>
+    <delete id="deletePlan" parameterType="Long">
+        DELETE FROM sport_plan where id = #{id}
+    </delete>
+
+    <resultMap id="SportPlanResultMap" type="SportPlanDTO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="total_sport_start" property="totalSportStart"/>
+        <result column="total_sport_end" property="totalSportEnd"/>
+        <result column="duration" property="totalDuration"/>
+        <result column="burn_kcal" property="totalBurnKcal"/>
+
+        <!-- SportPlanItem의 리스트를 매핑 -->
+        <collection property="items" ofType="SportItemDTO">
+            <result column="sport_start" property="sportStart"/>
+            <result column="sport_end" property="sportEnd"/>
+            <result column="duration" property="duration"/>
+            <result column="burn_kcal" property="burnKcal"/>
+            <result column="sport_name" property="sportName"/>
+            <result column="kcal" property="kcal"/>
+        </collection>
+    </resultMap>
+
+    <!--  개별 조회  -->
+    <select id="findSportPlanById" resultMap="SportPlanResultMap">
+        SELECT sp.*, spi.sport_start, spi.sport_end, spi.duration, spi.burn_kcal, sc.sport_name, sc.kcal
+        FROM sport_plan sp
+                 JOIN sport_plan_item spi ON sp.id = spi.sport_plan_id
+                 JOIN sport_category sc ON sc.id = spi.sport_category_id
+        WHERE sp.id = #{id}
+    </select>
+
+    <!--  기간별 조회 -->
+    <select id="findSportPlanByRange" resultMap="SportPlanResultMap">
+        SELECT sp.*, spi.sport_start, spi.sport_end, spi.duration, spi.burn_kcal, sc.sport_name, sc.kcal
+        FROM sport_plan sp
+                 JOIN sport_plan_item spi ON sp.id = spi.sport_plan_id
+                 JOIN sport_category sc ON sc.id = spi.sport_category_id
+        WHERE sp.total_sport_start BETWEEN #{startDate} AND #{endDate}
+        AND sp.user_id = #{userId}
+    </select>
+
+</mapper>

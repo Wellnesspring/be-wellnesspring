@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewellnesspring.sport.model.repository.SportRecordMapper">
+
+    <insert id="saveRecord" parameterType="SportRecord" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO sport_Record (user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
+     VALUES (#{userId}, #{totalSportStart}, #{totalSportEnd}, #{totalDuration}, #{totalBurnKcal})
+    </insert>
+    <update id="updateRecord" parameterType="SportRecord">
+        UPDATE sport_Record
+        set total_sport_start = #{totalSportStart},
+        total_sport_end = #{totalSportEnd},
+        total_duration = #{totalDuration},
+        total_burn_kcal = #{totalBurnKcal}
+        where id = #{id}
+    </update>
+    <select id="findRecordById" parameterType="Long" resultType="SportRecord">
+        select * from sport_record where id = #{id}
+    </select>
+
+    <delete id="deleteRecord" parameterType="Long">
+        DELETE FROM sport_record where id = #{id}
+    </delete>
+
+</mapper>

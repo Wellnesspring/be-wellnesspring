@@ -13,4 +13,13 @@
         TRUNCATE TABLE Sport_category
     </delete>
 
+    <select id="findByName" parameterType="String" resultType="SportCategory">
+        select * from Sport_category where sport_name = #{sportName}
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="SportCategory">
+        SELECT * FROM Sport_category where id = #{id}
+    </select>
+
+
 </mapper>

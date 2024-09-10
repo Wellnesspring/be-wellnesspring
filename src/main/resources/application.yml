@@ -32,6 +32,7 @@ mybatis:
   configuration:
     jdbc-type-for-null: null
     map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # mybatis 로그 찍어볼 때 주석 지우면 됩니다.
 
 
 
