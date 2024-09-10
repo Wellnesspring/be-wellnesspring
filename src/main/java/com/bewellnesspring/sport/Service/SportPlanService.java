@@ -4,16 +4,15 @@ import com.bewellnesspring.dbapi.model.repository.SportCategoryMapper;
 import com.bewellnesspring.dbapi.model.vo.SportCategory;
 import com.bewellnesspring.sport.model.repository.SportItemMapper;
 import com.bewellnesspring.sport.model.repository.SportPlanMapper;
-import com.bewellnesspring.sport.model.vo.SportDTO;
-import com.bewellnesspring.sport.model.vo.SportItemDTO;
-import com.bewellnesspring.sport.model.vo.SportPlan;
-import com.bewellnesspring.sport.model.vo.SportItem;
+import com.bewellnesspring.sport.model.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -137,7 +136,7 @@ public class SportPlanService {
 
         sportPlanMapper.updatePlan(sportPlan);
     }
-
+    @Transactional
     public void deletePlan(Long planId) {
         SportPlan sportPlan = sportPlanMapper.findPlanById(planId);
         if (sportPlan !=null) {
@@ -146,5 +145,14 @@ public class SportPlanService {
         } else {
             throw new IllegalArgumentException("삭제할 데이터를 찾지못했습니다.");
         }
+    }
+
+    @Transactional
+    public SportPlanDTO getSportPlanById(Long planId) {
+        return sportPlanMapper.findSportPlanById(planId);
+    }
+
+    public List<SportPlanDTO> getSportPlanByRange(LocalDate startDate, LocalDate endDate,String userId){
+        return sportPlanMapper.findSportPlanByRange(startDate,endDate,userId);
     }
 }

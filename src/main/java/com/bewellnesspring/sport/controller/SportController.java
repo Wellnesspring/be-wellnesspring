@@ -3,13 +3,17 @@ package com.bewellnesspring.sport.controller;
 import com.bewellnesspring.sport.Service.SportPlanService;
 import com.bewellnesspring.sport.Service.SportRecordService;
 import com.bewellnesspring.sport.model.vo.SportDTO;
+import com.bewellnesspring.sport.model.vo.SportPlan;
+import com.bewellnesspring.sport.model.vo.SportPlanDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -65,6 +69,28 @@ public class SportController {
     private ResponseEntity<?> saveSuccess(@RequestBody SportDTO sportDTO) {
         sportRecordService.successPlan(sportDTO.getSportPlanId());
         return ResponseEntity.status(HttpStatus.OK).body("계획실행 후 기록에 저장");
+    }
+
+    @GetMapping("/plan/{id}")
+    private ResponseEntity<SportPlanDTO> getSportPlanById(@PathVariable Long id) {
+        SportPlanDTO sportPlan = sportPlanService.getSportPlanById(id);
+        if(sportPlan != null ) {
+            return ResponseEntity.ok(sportPlan);
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/plan/range")
+    private ResponseEntity<List<SportPlanDTO>> getSportPlanRange(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                                 @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                                                 @RequestParam("userId") String userId) {
+        List<SportPlanDTO> list = sportPlanService.getSportPlanByRange(startDate,endDate,userId);
+        if(list !=null) {
+            return ResponseEntity.ok(list);
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
 }

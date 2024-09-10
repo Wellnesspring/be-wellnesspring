@@ -21,5 +21,42 @@
         DELETE FROM sport_plan where id = #{id}
     </delete>
 
+    <resultMap id="SportPlanResultMap" type="SportPlanDTO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="total_sport_start" property="totalSportStart"/>
+        <result column="total_sport_end" property="totalSportEnd"/>
+        <result column="duration" property="totalDuration"/>
+        <result column="burn_kcal" property="totalBurnKcal"/>
+
+        <!-- SportPlanItem의 리스트를 매핑 -->
+        <collection property="items" ofType="SportItemDTO">
+            <result column="sport_start" property="sportStart"/>
+            <result column="sport_end" property="sportEnd"/>
+            <result column="duration" property="duration"/>
+            <result column="burn_kcal" property="burnKcal"/>
+            <result column="sport_name" property="sportName"/>
+            <result column="kcal" property="kcal"/>
+        </collection>
+    </resultMap>
+
+    <!--  개별 조회  -->
+    <select id="findSportPlanById" resultMap="SportPlanResultMap">
+        SELECT sp.*, spi.sport_start, spi.sport_end, spi.duration, spi.burn_kcal, sc.sport_name, sc.kcal
+        FROM sport_plan sp
+                 JOIN sport_plan_item spi ON sp.id = spi.sport_plan_id
+                 JOIN sport_category sc ON sc.id = spi.sport_category_id
+        WHERE sp.id = #{id}
+    </select>
+
+    <!--  기간별 조회 -->
+    <select id="findSportPlanByRange" resultMap="SportPlanResultMap">
+        SELECT sp.*, spi.sport_start, spi.sport_end, spi.duration, spi.burn_kcal, sc.sport_name, sc.kcal
+        FROM sport_plan sp
+                 JOIN sport_plan_item spi ON sp.id = spi.sport_plan_id
+                 JOIN sport_category sc ON sc.id = spi.sport_category_id
+        WHERE sp.total_sport_start BETWEEN #{startDate} AND #{endDate}
+        AND sp.user_id = #{userId}
+    </select>
 
 </mapper>
