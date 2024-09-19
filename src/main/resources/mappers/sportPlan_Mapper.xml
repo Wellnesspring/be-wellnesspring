@@ -20,6 +20,13 @@
     <delete id="deletePlan" parameterType="Long">
         DELETE FROM sport_plan where id = #{id}
     </delete>
+    <select id="findAllByUserId" parameterType="String" resultType="SportPlanDTO">
+        SELECT *, spi.sport_category_id, sc.sport_name
+        FROM sport_plan sp
+        JOIN sport_plan_item spi on sp.id = spi.sport_plan_id
+        JOIN sport_category sc on spi.sport_category_id = sc.id
+        where user_id = #{userId}
+    </select>
 
     <resultMap id="SportPlanResultMap" type="SportPlanDTO">
         <id column="id" property="id"/>
@@ -58,5 +65,14 @@
         WHERE sp.total_sport_start BETWEEN #{startDate} AND #{endDate}
         AND sp.user_id = #{userId}
     </select>
+
+    <select id="findSportPlanWithName" resultMap="SportPlanResultMap">
+        SELECT  sp.*, spi.sport_start, spi.sport_end, spi.duration, spi.burn_kcal, sc.sport_name, sc.kcal
+        FROM sport_plan sp
+                 JOIN sport_plan_item spi ON sp.id = spi.sport_plan_id
+                 JOIN sport_category sc ON sc.id = spi.sport_category_id
+        WHERE sp.user_id = #{userId}
+    </select>
+
 
 </mapper>

@@ -4,6 +4,8 @@ import com.bewellnesspring.dbapi.model.vo.FoodCategory;
 import com.bewellnesspring.dbapi.model.vo.SportCategory;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface SportCategoryMapper {
 
@@ -16,5 +18,7 @@ public interface SportCategoryMapper {
     SportCategory findByName(String SportName);
 
     SportCategory findById(Long id);
+
+    List<SportCategory> findAll();
 
 }

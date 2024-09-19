@@ -21,5 +21,9 @@
         SELECT * FROM Sport_category where id = #{id}
     </select>
 
+    <select id="findAll" resultType="SportCategory">
+        SELECT * FROM Sport_category
+    </select>
+
 
 </mapper>

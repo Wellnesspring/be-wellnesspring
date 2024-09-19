@@ -12,14 +12,13 @@
         SELECT
             id,
             sport_plan_id,
-            sport_record_id,
             sport_category_id,
             sport_start,
             sport_end,
             duration,
             burn_kcal
         FROM sport_plan_item
-        WHERE sport_plan_id = #{sportPlanId}
+        WHERE sport_plan_id = #{id}
     </select>
 
     <!-- 운동기록저장  -->
@@ -40,5 +39,13 @@
     <select id="selectByPlanId" parameterType="Long" resultType="SportItem">
         SELECT * FROM sport_plan_item where sport_plan_id = #{planId}
     </select>
+
+    <select id="selectSportDTOByPlanIdDTO" parameterType="Long" resultType="SportItemDTO">
+        SELECT * , sc.sport_name, sc.kcal
+        FROM sport_plan_item as spi
+        join sport_category as sc on spi.sport_category_id = sc.id
+        where sport_plan_id = #{planId}
+    </select>
+
 
 </mapper>

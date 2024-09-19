@@ -1,6 +1,7 @@
 package com.bewellnesspring.sport.model.repository;
 
 import com.bewellnesspring.sport.model.vo.SportItem;
+import com.bewellnesspring.sport.model.vo.SportItemDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public interface SportItemMapper {
     void deleteRecordItem(Long recordId);
 
     List<SportItem> selectByPlanId(Long planId);
+
+    List<SportItem> findByPlanId(Long id);
+
+    List<SportItemDTO> selectSportDTOByPlanIdDTO(Long planId);
+
 
 
 
