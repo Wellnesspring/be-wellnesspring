@@ -22,18 +22,18 @@ public class AlertController {
     private final SubscribeMapper subscribeMapper;
 
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createAlert(@RequestBody AlertCreateRequest request) {
-
-        try {
-            alertService.createAlert(request.userId, request.alType, request.alertTime, request.scheduled); //알림 생성 후 db에 저장
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body("알림이 생성되었습니다.");
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<?> createAlert(@RequestBody AlertCreateRequest request) {
+//
+//        try {
+//            alertService.createAlert(request.userId, request.alType, request.alertTime, request.scheduled); //알림 생성 후 db에 저장
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body("알림이 생성되었습니다.");
+//    }
 
     @Data
     static class AlertCreateRequest {
@@ -43,17 +43,17 @@ public class AlertController {
         private int scheduled;
     }
 
-    @PostMapping("/create/exercise")
-    public ResponseEntity<?> exerciseAlert(@RequestBody AlertCreateRequest request) {
-
-        try {
-            alertService.createAlert(request.userId, request.alType, request.alertTime, request.scheduled); //알림 생성 후 db에 저장
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-        return ResponseEntity.status(HttpStatus.OK).body("운동 알림이 생성되었습니다.");
-    }
+//    @PostMapping("/create/exercise")
+//    public ResponseEntity<?> exerciseAlert(@RequestBody AlertCreateRequest request) {
+//
+//        try {
+//            alertService.createAlert(request.userId, request.alType, request.alertTime, request.scheduled); //알림 생성 후 db에 저장
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body("운동 알림이 생성되었습니다.");
+//    }
 
     @Value("${vapid.public}")
     private String vapidPublicKey;

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SportPlanMapper {
@@ -23,5 +24,11 @@ public interface SportPlanMapper {
     SportPlanDTO findSportPlanById(Long id);
 
     List<SportPlanDTO> findSportPlanByRange(LocalDate startDate, LocalDate endDate, String userId);
+
+    List<SportPlanDTO> findAllByUserId(String userId);
+
+    List<Map<String, Object>> findAllByUserIdV2(String userId);
+
+    List<SportPlanDTO> findSportPlanWithName(String userId);
 
 }
