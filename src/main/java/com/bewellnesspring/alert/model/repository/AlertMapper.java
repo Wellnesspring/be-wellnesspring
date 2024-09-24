@@ -11,7 +11,7 @@ import com.bewellnesspring.alert.model.vo.Alert;
 @Mapper
 public interface AlertMapper {
 
-    void insertAlert(Long typeId, String userId, Date alertTime, int scheduled);
+    void insertAlert(Long typeId, String userId, LocalDateTime alertTime, int scheduled);
 
     Alert findJoinAlertByType(Long id, String alType);
 
@@ -20,5 +20,12 @@ public interface AlertMapper {
     void changeStatusToSend(Long alertId);
 
     List<Alert> findByTimeAlert(LocalDateTime now, LocalDateTime endTime);
+
+    List<Alert> findAlertById(String userId);
+
+    void updateRead(Long alertId);
+
+    void deleteAlert(Long id);
+
 
 }

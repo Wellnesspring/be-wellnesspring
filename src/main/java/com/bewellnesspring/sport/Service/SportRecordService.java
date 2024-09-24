@@ -24,10 +24,10 @@ public class SportRecordService {
     private final SportPlanMapper sportPlanMapper;
 
     @Transactional
-    public void recordSave(SportDTO sportDTO) {
+    public void recordSave(SportPlanDTO sportPlanDTO) {
 
         SportRecord sportRecord = new SportRecord();
-        sportRecord.setUserId(sportDTO.getUserId());
+        sportRecord.setUserId(sportPlanDTO.getUserId());
         sportRecordMapper.saveRecord(sportRecord);
         System.out.println("sportRecord = " + sportRecord);
 
@@ -40,7 +40,7 @@ public class SportRecordService {
         int totalDuration = 0;
         double totalBurnKcal = 0;
 
-        for(SportItemDTO item : sportDTO.getSportItems()) {
+        for(SportItemDTO item : sportPlanDTO.getItems()) {
             SportCategory sportCategory = sportCategoryMapper.findByName(item.getSportName());
 
             LocalDateTime startTime = item.getSportStart();

@@ -54,6 +54,7 @@
                  JOIN sport_plan_item spi ON sp.id = spi.sport_plan_id
                  JOIN sport_category sc ON sc.id = spi.sport_category_id
         WHERE sp.id = #{id}
+          AND sp.check = 'before'
     </select>
 
     <!--  기간별 조회 -->
@@ -64,6 +65,7 @@
                  JOIN sport_category sc ON sc.id = spi.sport_category_id
         WHERE sp.total_sport_start BETWEEN #{startDate} AND #{endDate}
         AND sp.user_id = #{userId}
+        AND sp.check = 'before'
     </select>
 
     <select id="findSportPlanWithName" resultMap="SportPlanResultMap">
@@ -72,7 +74,12 @@
                  JOIN sport_plan_item spi ON sp.id = spi.sport_plan_id
                  JOIN sport_category sc ON sc.id = spi.sport_category_id
         WHERE sp.user_id = #{userId}
+          AND sp.check = 'before'
     </select>
+
+    <update id="recordPlan">
+        UPDATE sport_plan SET `check` = 'record' where id = #{id}
+    </update>
 
 
 </mapper>

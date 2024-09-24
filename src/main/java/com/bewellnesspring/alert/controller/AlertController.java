@@ -1,6 +1,8 @@
 package com.bewellnesspring.alert.controller;
 
+import com.bewellnesspring.alert.model.repository.AlertMapper;
 import com.bewellnesspring.alert.model.repository.SubscribeMapper;
+import com.bewellnesspring.alert.model.vo.Alert;
 import com.bewellnesspring.alert.model.vo.Subscribe;
 import com.bewellnesspring.alert.service.AlertService;
 import lombok.Data;
@@ -11,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ public class AlertController {
 
     private final AlertService alertService;
     private final SubscribeMapper subscribeMapper;
+    private final AlertMapper alertMapper;
 
 
 //    @PostMapping("/create")
@@ -76,7 +81,37 @@ public class AlertController {
         return ResponseEntity.ok("{\"message\": \"Subscription saved successfully\"}");
 
     }
+    @GetMapping("/show")
+    public ResponseEntity<?> getUserAlert(@RequestParam("userId") String userId) {
 
+        List<Alert> alerts = alertMapper.findAlertById(userId);
+        if (alerts != null && !alerts.isEmpty()) {
+            return ResponseEntity.ok(alerts);
+        } else  {
+            return ResponseEntity.badRequest().body("알람이없습니다.");
+        }
+    }
+
+    @PostMapping("/read")
+    public ResponseEntity<String> readAlert(@RequestBody Map<String, Long> request) {
+        Long alertId = request.get("id");
+        if (alertId == null) {
+            return ResponseEntity.badRequest().body("해당 알람을 찾지 못했습니다.");
+        }
+
+        alertMapper.updateRead(alertId);
+        return ResponseEntity.status(HttpStatus.OK).body("알람 읽음표시로 변경완료");
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteAlert(@RequestBody Map<String, Long> request) {
+        Long alertId = request.get("id");
+        if (alertId == null) {
+            return ResponseEntity.badRequest().body("삭제할 알람이 없습니다.");
+        }
+        alertMapper.deleteAlert(alertId);
+        return ResponseEntity.status(HttpStatus.OK).body("알람 삭제 성공");
+    }
 }
 
 

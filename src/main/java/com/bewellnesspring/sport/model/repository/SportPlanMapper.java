@@ -31,4 +31,6 @@ public interface SportPlanMapper {
 
     List<SportPlanDTO> findSportPlanWithName(String userId);
 
+    void recordPlan(Long id);
+
 }

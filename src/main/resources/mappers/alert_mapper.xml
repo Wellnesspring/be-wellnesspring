@@ -54,5 +54,29 @@
         where alertTime BETWEEN #{now} AND #{endTime} and status = 'ready';
     </select>
 
+    <resultMap id="AlertResultMap2" type="com.bewellnesspring.alert.model.vo.Alert">
+        <constructor>
+            <arg column="id" javaType="Long"/>
+            <arg column="read_or_not" javaType="String" />
+            <arg column="alertTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+            <arg column="scheduled" javaType="int"/>
+            <arg column="alType" javaType="String" />
+            <arg column="message1" javaType="String"/>
+            <arg column="message2" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <select id="findAlertById" resultMap="AlertResultMap2" parameterType="String">
+        SELECT a.id, a.read_or_not, a.alertTime, a.scheduled, at.message1, at.message2, at.altype
+        FROM alert a
+        JOIN alert_type at on a.type_id = at.type_id
+        WHERE a.user_id = #{userId};
+    </select>
+
+    <update id="updateRead" parameterType="Long">
+        update alert set read_or_not = 'READ' where id = #{alertId}
+    </update>
+    <delete id="deleteAlert" parameterType="Long">
+        DELETE FROM alert where id = #{id}
+    </delete>
 
 </mapper>

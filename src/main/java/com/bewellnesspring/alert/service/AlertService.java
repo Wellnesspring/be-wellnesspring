@@ -9,6 +9,9 @@ import com.bewellnesspring.sport.model.vo.SportDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 
@@ -26,15 +29,22 @@ public class AlertService {
         User user = certificationMapper.signIn(sportDTO.getUserId());
         AlertType alertType = alertTypeMapper.findByAltype(sportDTO.getAlType());
 
-        if(user != null) {
+        if (user != null) {
+            // ZonedDateTime을 LocalDateTime으로 변환
+            ZonedDateTime alertTimeKST = sportDTO.getAlertTime().toInstant().atZone(ZoneId.of("UTC"))
+                    .withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+            LocalDateTime alertTime = alertTimeKST.toLocalDateTime();
+            System.out.println(" 여기보세요!!!!!!");
+            System.out.println("alertTime = " + alertTime);
+
             alertMapper.insertAlert(
                     alertType.getId(),
                     user.getUserId(),
-                    sportDTO.getAlertTime(),
-                    sportDTO.getScheduled()
+                    alertTime,
+                    sportDTO.getScheduled() // 필요시 여기도 변환
             );
         } else {
-            System.out.println("id값을 못 가져왔을때 확인하기 userId : "+ sportDTO.getUserId());
+            System.out.println("id값을 못 가져왔을때 확인하기 userId : " + sportDTO.getUserId());
             System.out.println("id값을 못 가져왔을때 확인하기 altypeId : " + sportDTO.getAlType());
         }
     }
