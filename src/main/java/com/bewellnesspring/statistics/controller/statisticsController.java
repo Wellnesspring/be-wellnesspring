@@ -22,7 +22,6 @@ import com.bewellnesspring.statistics.service.statisticsService;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:3000")  // 클라이언트의 출처
 @RestController
 @RequestMapping("dashboard/statistics")
 @RequiredArgsConstructor
