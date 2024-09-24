@@ -20,7 +20,9 @@ DROP TABLE if exists Alert_type;
 DROP TABLE if exists users;
 DROP TABLE if exists PLAN;
 DROP TABLE if exists sport_plan;
+DROP TABLE if exists sport_plan_item;
 DROP TABLE if exists sport_record;
+DROP TABLE if exists sport_record_item;
 
 CREATE TABLE users(
         user_id 	VARCHAR(50) primary key	NOT NULL,
@@ -91,23 +93,6 @@ CREATE TABLE  Sport_Like  (
       liked_at 	timestamp	DEFAULT now()
 );
 
-CREATE TABLE  Sport_Routine  (
-     id 	int auto_increment primary key	NOT NULL,
-     user_id 	VARCHAR(50)	COMMENT 'Users 테이블의 id',
-     sport_routine_name 	varchar(255)
-);
-
-CREATE TABLE  Sport_Routine_List  (
-      id 	int auto_increment primary key	NOT NULL,
-      sport_routine_id 	int COMMENT 'Sport_Routine 테이블의 id',
-      sport_category_id 	int	COMMENT 'Sport_Category 테이블의 id',
-      set_count 	int,
-      sport_count 	int,
-      volume 	int,
-      routine_start 	timestamp,
-      routine_end 	timestamp
-);
-
 CREATE TABLE  Weight_Record  (
          id int auto_increment primary key	NOT NULL,
          user_id VARCHAR(50) COMMENT 'Users 테이블의 id',
@@ -165,7 +150,9 @@ CREATE TABLE  Sport_plan  (
    total_sport_start 	timestamp	NULL,
    total_sport_end 	timestamp	NULL,
    total_duration 	int	NULL,
-   total_burn_kcal 	float	NULL
+   total_burn_kcal 	float	NULL,
+   `check` VARCHAR(50)	NULL	DEFAULT 'before'	COMMENT 'before,record 기록전,기록후'
+
 );
 
 CREATE TABLE  Sport_Record_Item  (

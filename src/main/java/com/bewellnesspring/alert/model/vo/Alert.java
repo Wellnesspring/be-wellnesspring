@@ -79,4 +79,13 @@ public class Alert {
         this.typeId = typeId;
         this.userId = userId;
     }
+
+    public Alert(Long id, String readOrNot, LocalDateTime alertTime, Integer scheduled, String alType, String message1, String message2) {
+        this.id = id;
+        this.readOrNot = readOrNot;
+        this.alertTime = alertTime;
+        this.scheduled = scheduled;
+        this.alertType = new AlertType(null, alType, message1, message2);
+
+    }
 }

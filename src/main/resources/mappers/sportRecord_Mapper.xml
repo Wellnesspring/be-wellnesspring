@@ -22,4 +22,32 @@
         DELETE FROM sport_record where id = #{id}
     </delete>
 
+    <resultMap id="SportRecordResultMap" type="SportRecordDTO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="total_sport_start" property="totalSportStart"/>
+        <result column="total_sport_end" property="totalSportEnd"/>
+        <result column="duration" property="totalDuration"/>
+        <result column="burn_kcal" property="totalBurnKcal"/>
+
+        <!-- SportPlanItem의 리스트를 매핑 -->
+        <collection property="items" ofType="SportItemDTO">
+            <result column="sport_start" property="sportStart"/>
+            <result column="sport_end" property="sportEnd"/>
+            <result column="duration" property="duration"/>
+            <result column="burn_kcal" property="burnKcal"/>
+            <result column="sport_name" property="sportName"/>
+            <result column="kcal" property="kcal"/>
+        </collection>
+    </resultMap>
+
+    <select id="findSportRecordWithName" resultMap="SportRecordResultMap">
+        SELECT  sr.*, sri.sport_start, sri.sport_end, sri.duration, sri.burn_kcal, sc.sport_name, sc.kcal
+        FROM sport_record sr
+                 JOIN sport_record_item sri ON sr.id = sri.sport_record_id
+                 JOIN sport_category sc ON sc.id = sri.sport_category_id
+        WHERE sr.user_id = #{userId}
+    </select>
+
+
 </mapper>

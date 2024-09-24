@@ -4,6 +4,7 @@ import com.bewellnesspring.certification.model.vo.User;
 import com.bewellnesspring.sport.Service.SportPlanService;
 import com.bewellnesspring.sport.Service.SportRecordService;
 import com.bewellnesspring.sport.model.repository.SportPlanMapper;
+import com.bewellnesspring.sport.model.repository.SportRecordMapper;
 import com.bewellnesspring.sport.model.vo.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class SportController {
     private final SportPlanService sportPlanService;
     private final SportRecordService sportRecordService;
     private final SportPlanMapper sportPlanMapper;
+    private final SportRecordMapper sportRecordMapper;
 
 
     @PostMapping("/save/plan")
@@ -34,9 +36,9 @@ public class SportController {
     }
 
     @PostMapping("/save/record")
-    private ResponseEntity<?> saveSportRecord(@RequestBody SportDTO sportDTO) {
-
-        sportRecordService.recordSave(sportDTO);
+    private ResponseEntity<?> saveSportRecord(@RequestBody SportPlanDTO sportPlanDTO) {
+        sportRecordService.recordSave(sportPlanDTO);
+        sportPlanService.recordPlan(sportPlanDTO.getId());
         return ResponseEntity.status(HttpStatus.OK).body("운동기록 저장완료");
     }
 
@@ -64,7 +66,7 @@ public class SportController {
         return ResponseEntity.status(HttpStatus.OK).body("운동계획 삭제완료");
     }
 
-    @DeleteMapping("/delete/record")
+    @DeleteMapping("/delete/record/{id}")
     private ResponseEntity<?> deleteSportRecord(@PathVariable Long id) {
 
         sportRecordService.deleteRecord(id);
@@ -78,26 +80,20 @@ public class SportController {
     }
 
     @GetMapping("/plan/view")
-    public ResponseEntity<?> getSportPlan(HttpSession session) {
-//        // 세션에서 사용자 정보 가져오기
-//        User user = (User) session.getAttribute("user");  // 세션에 저장된 사용자 정보
-//
-//        if (user == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다.");
-//        }
-
-        User user = new User();
-        user.setUserId("yoohwanjoo@nate.com");
-
-
-        // 사용자 ID를 기반으로 운동 계획 조회
-//        List<SportPlanDTO> sportPlans = sportPlanMapper.findAllByUserId(user.getUserId());
-
-        //운동의 이름까지 가져오기
-        List<SportPlanDTO> sportPlans = sportPlanMapper.findSportPlanWithName(user.getUserId());
-
+    public ResponseEntity<?> getSportPlan(@RequestParam("userId") String userId) {
+        List<SportPlanDTO> sportPlans = sportPlanMapper.findSportPlanWithName(userId);
         if (sportPlans != null && !sportPlans.isEmpty()) {
             return ResponseEntity.ok(sportPlans);
+        } else {
+            return ResponseEntity.badRequest().body("운동 계획이 없습니다.");
+        }
+    }
+
+    @GetMapping("/record/view")
+    public ResponseEntity<?> getSportRecord(@RequestParam("userId") String userId) {
+        List<SportRecordDTO> sportRecords = sportRecordMapper.findSportRecordWithName(userId);
+        if (sportRecords != null && !sportRecords.isEmpty()) {
+            return ResponseEntity.ok(sportRecords);
         } else {
             return ResponseEntity.badRequest().body("운동 계획이 없습니다.");
         }
@@ -116,7 +112,6 @@ public class SportController {
         }
     }
 
-
     @GetMapping("/plan/range")
     private ResponseEntity<List<SportPlanDTO>> getSportPlanRange(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                  @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
@@ -128,18 +123,5 @@ public class SportController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
-//    @GetMapping("/auth/userinfo")
-//    public ResponseEntity<?> getUserInfo(HttpSession session) {
-//        // 세션에서 userId 가져오기
-//        String userId = (String) session.getAttribute("userId");
-//
-//        if (userId != null) {
-//            return ResponseEntity.ok(userId);
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
-//        }
-//    }
-
 
 }

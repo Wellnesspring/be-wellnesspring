@@ -182,4 +182,10 @@ public class SportPlanService {
         return sportPlanMapper.findSportPlanByRange(startDate,endDate,userId);
     }
 
+    @Transactional
+    public void recordPlan(Long id) {
+        sportPlanMapper.recordPlan(id);
+    }
+
+
 }
