@@ -40,10 +40,12 @@ CREATE TABLE users(
         locker varchar(100) NOT NULL
 );
 
-CREATE TABLE social(
-    platform VARCHAR(20) primary key NOT NULL COMMENT '소셜 플랫폼',
+CREATE TABLE Social(
+    platform VARCHAR(20) NOT NULL COMMENT '소셜 플랫폼',
     user_id VARCHAR(50) NOT NULL,
-    id_num varchar(20) NOT NULL COMMENT '해당플랫폼에서의 식별값'
+    id_num varchar(20) NOT NULL COMMENT '해당플랫폼에서의 식별값',
+    primary key (user_id, platform),
+ 	foreign key (user_id) references users(user_id)
 );
 
 CREATE TABLE  Food_Category  (

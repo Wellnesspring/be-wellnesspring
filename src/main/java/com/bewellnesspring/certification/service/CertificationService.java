@@ -1,38 +1,36 @@
 package com.bewellnesspring.certification.service;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.lang.reflect.Field;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.bewellnesspring.certification.model.repository.CertificationMapper;
 import com.bewellnesspring.certification.model.vo.EncodeField;
+import com.bewellnesspring.certification.model.vo.Social;
 import com.bewellnesspring.certification.model.vo.User;
 import com.bewellnesspring.certification.model.vo.UserFront;
 import com.bewellnesspring.common.AESCodec;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,9 +41,9 @@ public class CertificationService implements UserDetailsService {
 	private final BCryptPasswordEncoder bCryptEncoder;
 	private final CertificationMapper dao;
 
-	@Value("@{social.kakao.api-key}")
+	@Value("${social.kakao.api-key}")
 	private String apiKey;
-	@Value("@{social.kakao.redirect-url}")
+	@Value("${social.kakao.redirect-url}")
 	private String redirectUrl;
 
 	public UserFront signIn(Authentication authentication) {
@@ -55,7 +53,7 @@ public class CertificationService implements UserDetailsService {
 		} catch (Exception ignored) {return null;}
 	}
 
-	public UserFront signIn(int idNum) {
+	public UserFront signIn(long idNum) {
 		try {
 			User user = userDecoding(dao.signInAtIdNum(idNum));
 			return new UserFront(user);
@@ -72,12 +70,23 @@ public class CertificationService implements UserDetailsService {
 		}
 	}
 
-	public UserFront useKakao(String code, String state) {
-		if(state.equals("wellnesspring") && code != null && !code.isEmpty()) {
-			int idNum = getUserFromKakao(getTokenFromKakao(code));
-			return signIn(idNum);
+	public boolean idCheck(String idck) {
+		return dao.signIn(idck) != null;
+	}
+
+	public UserFront useKakao(String code, String userId) throws IOException {
+		long idNum = 0;
+		
+		if(code != null && !code.isEmpty()) {
+			idNum = getUserFromKakao(getTokenFromKakao(code));
 		}
-		return null;
+		
+		if(idNum != 0 && userId != null && userId.length() > 0 ) {	// 카카오를 이용한 소셜 로그인 등록
+			if(dao.addKakao(new Social(userId, idNum, "kakao")) == 0) {
+				throw new IOException("소셜 로그인 등록 실패");
+			}
+		}
+		return signIn(idNum);
 	}
 
 	/**
@@ -137,14 +146,24 @@ public class CertificationService implements UserDetailsService {
 	 */
 	private String getTokenFromKakao(String code) {
 		String authTokenProvider = "https://kauth.kakao.com/oauth/token";
-		HashMap<String, String> header = new HashMap<>();
-		header.put("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-		String param = "grant_type=authorization_code" +
-				"&client_id=" + apiKey +
-				"&redirect_uri=" + redirectUrl +
-				"&code=" + code;
+		HttpHeaders header = new HttpHeaders();
+		MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
+		RestTemplate rt = new RestTemplate();
+		Gson gson = new Gson();
 
-		return sendHttpRequest(authTokenProvider, "POST", header, param).getAsJsonObject().get("access_token").getAsString();
+		header.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		param.add("grant_type", "authorization_code");
+		param.add("client_id", apiKey);
+		param.add("redirect_uri", redirectUrl);
+		param.add("code", code);
+		
+		String responseBody = rt.exchange(
+                authTokenProvider,
+                HttpMethod.POST,
+                new HttpEntity<>(param, header),
+                String.class
+			).getBody();
+		return gson.fromJson(responseBody, JsonObject.class).get("access_token").getAsString();
 	}
 
 	/**
@@ -152,54 +171,17 @@ public class CertificationService implements UserDetailsService {
 	 * @param token 사용자 정보에 접근할 수 있는 토큰
 	 * @return 사용자 정보가 담긴 객체
 	 */
-	private int getUserFromKakao(String token) {
+	private long getUserFromKakao(String token) {
 		String userInfoProvider = "https://kapi.kakao.com/v2/user/me";
-		HashMap<String, String> header = new HashMap<>();
-		header.put("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-		header.put("Authorization", "Bearer " + token);
-
-		return sendHttpRequest(userInfoProvider, "GET", header, null).get("id").getAsInt();
-	}
-
-	/**
-	 * http 요청 수행(응답이 json 객체일 경우)
-	 * @param url    요청을 보낼 주소
-	 * @param method 요청 방식
-	 * @param header 요청의 header에 추가 할 욥션
-	 * @param body   요청의 body
-	 * @return 응답인 InputStreamReader 객체
-	 */
-	private JsonObject sendHttpRequest(String url, String method, HashMap<String, String> header, String body) {
-		URL urlObj;
-		Set<String> methods = new HashSet<>(Arrays.asList("POST", "PUT", "DELETE"));
-
-		try {
-			urlObj = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
-
-			conn.setRequestMethod(method);
-			if(methods.contains(method) && body != null) {
-				conn.setDoOutput(true); // 이 요청에 본문을 포함하겠다는 옵션.
-			}
-
-//			헤더가 있으면 헤더 설정
-			if(header != null && !header.isEmpty()) {
-				Set<String> keys = header.keySet();
-				for(String key : keys) {
-					conn.setRequestProperty(key, header.get(key));
-				}
-			}
-
-			try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()))) {
-				if(body != null) {bw.write(body);}
-				bw.flush();
-
-				Reader reader = new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8);
-				return JsonParser.parseReader(reader).getAsJsonObject();
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		HttpHeaders header = new HttpHeaders();
+		RestTemplate rt = new RestTemplate();
+		Gson gson = new Gson();
+		
+		header.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		header.add("Authorization", "Bearer " + token);
+		
+		String responseBody = rt.exchange(userInfoProvider, HttpMethod.GET, new HttpEntity<>(header), String.class).getBody();
+		return gson.fromJson(responseBody, JsonObject.class).get("id").getAsLong();
 	}
 
 	/**

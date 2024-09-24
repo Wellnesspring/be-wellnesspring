@@ -8,7 +8,7 @@
 		WHERE USER_ID = #{userId}
 	</select>
 
-	<select id="signInAtIdNum" parameterType="int" resultType="user">
+	<select id="signInAtIdNum" parameterType="long" resultType="user">
 		SELECT *
 		FROM USERS
 		INNER JOIN social using(user_id)
@@ -26,7 +26,17 @@
 		        #{locker}
 			   )
 	</insert>
+	
 	<select id="findUserIdWhoAgreeAlram" resultType="user">
 		select user_id from users where alarm_agree = '동의';
 	</select>
+	
+	<insert id="addKakao" parameterType="social">
+		INSERT INTO SOCIAL(user_id, id_num, platform)
+		VALUES (
+	        #{userId},
+            #{idNum},
+            #{platform}
+   		)
+	</insert>
 </mapper>

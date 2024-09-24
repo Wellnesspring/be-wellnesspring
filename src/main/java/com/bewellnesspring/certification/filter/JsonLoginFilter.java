@@ -81,12 +81,6 @@ public class JsonLoginFilter extends AbstractAuthenticationProcessingFilter {
             request.getSession(true);
         }
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-
-        // 세션 ID 쿠키 설정 (세션 관리가 활성화된 경우)
-        Cookie sessionCookie = new Cookie("JSESSIONID", request.getSession().getId());
-        sessionCookie.setPath("/");
-        sessionCookie.setHttpOnly(true);
-        response.addCookie(sessionCookie);
         
         if (!response.isCommitted()) {
             response.sendRedirect("/auth/signinOk");
