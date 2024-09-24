@@ -55,11 +55,11 @@ INSERT INTO Alert
 VALUES (2, 'user01', 'UNREAD', now(),2024-08-27T12:47:00 ,10);
 
 INSERT INTO Alert_type
-(altype, messge1, message2)
+(altype, message1, message2)
 VALUES ('운동','운동하기 ','분 전입니다!');
 
 INSERT INTO Alert_type
-(altype, messge1, message2)
+(altype, message1, message2)
 VALUES ('식사','식사하기 ','분 전입니다!');
 
 INSERT INTO Plan

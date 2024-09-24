@@ -1,5 +1,7 @@
 package com.bewellnesspring.certification.controller;
 
+import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +44,7 @@ public class CertificationController {
 	 */
 	@PostMapping("/signup")
 	public ResponseEntity<Object> signUp(@RequestBody User u) {
-		return new ResponseEntity<>(service.signUp(u) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+		return service.signUp(u) ? ResponseEntity.noContent().build() : ResponseEntity.internalServerError().build();
 	}
 	
 	/**
@@ -57,14 +59,24 @@ public class CertificationController {
 	}
 	
 	/**
+	 * 회원가입 전 사용자 id 중복 확인
+	 * @param idck 사용자가 사용하고자 하는 id
+	 * @return 사용자가 입력한 id 사용 가능 여부
+	 */
+	@GetMapping("/check")
+	public ResponseEntity<Object> idCheck(@RequestParam(name = "idck") String idck) {
+		return new ResponseEntity<>(service.idCheck(idck) ? HttpStatus.MULTI_STATUS : HttpStatus.NO_CONTENT);
+	}
+	
+	/**
 	 * 카카오 계정을 이용한 로그인
 	 * @param code 사용자가 카카오에 요청하여 받아온 인증코드
-	 * @param state csrf 대비용
 	 * @return 사용자 정보
+	 * @throws IOException 
 	 */
 	@GetMapping("/kakao")
-	public ResponseEntity<UserFront> useKakao(@RequestParam String code, @RequestParam String state) {
-		UserFront u = service.useKakao(code, state);
-		return u != null ? ResponseEntity.ok(u) : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	public ResponseEntity<UserFront> useKakao(@RequestParam(name = "code") String code) throws IOException {
+		UserFront u = (UserFront) service.useKakao(code, null);
+		return u != null ? ResponseEntity.ok(u) : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 }
