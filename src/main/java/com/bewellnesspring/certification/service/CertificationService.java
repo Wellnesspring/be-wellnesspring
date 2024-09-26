@@ -40,11 +40,10 @@ public class CertificationService implements UserDetailsService {
 
 	private final BCryptPasswordEncoder bCryptEncoder;
 	private final CertificationMapper dao;
+	private final String[] redirectUrl = {"http://localhost:3000/users/profile", "http://localhost:3000/login"};
 
 	@Value("${social.kakao.api-key}")
 	private String apiKey;
-	@Value("${social.kakao.redirect-url}")
-	private String redirectUrl;
 
 	public UserFront signIn(Authentication authentication) {
 		try {
@@ -78,7 +77,7 @@ public class CertificationService implements UserDetailsService {
 		long idNum = 0;
 		
 		if(code != null && !code.isEmpty()) {
-			idNum = getUserFromKakao(getTokenFromKakao(code));
+			idNum = getUserFromKakao(getTokenFromKakao(code, userId));
 		}
 		
 		if(idNum != 0 && userId != null && userId.length() > 0 ) {	// 카카오를 이용한 소셜 로그인 등록
@@ -144,7 +143,7 @@ public class CertificationService implements UserDetailsService {
 	 * @param code 사용자가 받아온 인증코드
 	 * @return 사용자 정보에 접근할 수 있는 토큰
 	 */
-	private String getTokenFromKakao(String code) {
+	private String getTokenFromKakao(String code, String userId) {
 		String authTokenProvider = "https://kauth.kakao.com/oauth/token";
 		HttpHeaders header = new HttpHeaders();
 		MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
@@ -154,7 +153,7 @@ public class CertificationService implements UserDetailsService {
 		header.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 		param.add("grant_type", "authorization_code");
 		param.add("client_id", apiKey);
-		param.add("redirect_uri", redirectUrl);
+		param.add("redirect_uri", userId != null ? redirectUrl[0]: redirectUrl[1]);
 		param.add("code", code);
 		
 		String responseBody = rt.exchange(
