@@ -36,4 +36,6 @@ public interface CertificationMapper {
 	 * @param idNum 카카오측 사용자 식별값
 	 */
 	int addKakao(Social social);
+
+	int uploadProfile(User userEncoding);
 }
