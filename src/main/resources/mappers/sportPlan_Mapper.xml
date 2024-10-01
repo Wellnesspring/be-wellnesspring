@@ -81,5 +81,12 @@
         UPDATE sport_plan SET `check` = 'record' where id = #{id}
     </update>
 
+    <select id="countNotRecordPlan" resultType="int" parameterType="String">
+        SELECT COUNT(*)
+        FROM sport_plan
+        WHERE user_id = #{userId}
+          AND `check` = 'before'
+          AND total_sport_end &lt; NOW()
+    </select>
 
 </mapper>

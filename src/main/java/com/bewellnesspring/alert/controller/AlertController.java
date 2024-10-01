@@ -69,7 +69,8 @@ public class AlertController {
     }
 
     @PostMapping("/save-subscription")
-    public ResponseEntity<String> saveSubscription(@RequestBody Subscription sub) {
+    public ResponseEntity<String> saveSubscription(@RequestBody Subscription sub,
+                                                   @RequestBody Map<String, Long> request) {
 
         System.out.println("Subscription received: " + sub);
 

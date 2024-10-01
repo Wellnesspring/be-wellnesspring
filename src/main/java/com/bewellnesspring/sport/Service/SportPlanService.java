@@ -187,5 +187,16 @@ public class SportPlanService {
         sportPlanMapper.recordPlan(id);
     }
 
+    @Transactional
+    public int countNotRecordPlan(String userId){
+        if (userId!=null){
+            return sportPlanMapper.countNotRecordPlan(userId);
+        } else {
+            return 0;
+        }
+    }
+
+
+
 
 }
