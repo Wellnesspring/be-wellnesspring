@@ -33,4 +33,6 @@ public interface SportPlanMapper {
 
     void recordPlan(Long id);
 
+    int countNotRecordPlan(String userId);
+
 }

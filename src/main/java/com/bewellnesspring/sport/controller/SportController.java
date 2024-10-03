@@ -111,7 +111,6 @@ public class SportController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
     @GetMapping("/plan/range")
     private ResponseEntity<List<SportPlanDTO>> getSportPlanRange(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                  @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
@@ -122,6 +121,10 @@ public class SportController {
         } else {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+    @GetMapping("/alert/plan")
+    public int countNotRecordPlan(@RequestParam("userId") String userId) {
+        return sportPlanService.countNotRecordPlan(userId);
     }
 
 }
