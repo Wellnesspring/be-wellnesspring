@@ -21,8 +21,8 @@ public class mealsService {
     }
 
     // 음식 정보 조회
-    public List<Map<String, Object>> getFood() {
-        return mealsRepository.getFood();
+    public List<Map<String, Object>> getFoodByString(Map<String, Object> rmap) {
+        return mealsRepository.getFoodByString(rmap);
     }
 
     // 영양소 정보 조회
@@ -52,11 +52,30 @@ public class mealsService {
     }
 
     // 식사 상세 정보 업데이트
-    public void updateMealDetail(Map<String, Object> rmap) {
-        mealsRepository.updateMealDetail(rmap);
+    public void updateMeal(Map<String, Object> rmap) {
+        mealsRepository.updateMeal(rmap);
     }
 
     public List<Map<String, Object>> getPlanbyDate(Map<String, Object> rmap) {
         return mealsRepository.getPlanbyDate(rmap);
+    }
+    public List<Map<String, Object>> getMealDetail(Map<String, Object> rmap) {
+        return mealsRepository.getMealDetail(rmap);
+    }
+
+    public void deleteMealDetail(Map<String, Object> rmap) {
+        mealsRepository.deleteMealDetail(rmap);
+    }
+
+    public void deleteMeal(Map<String, Object> rmap) {
+        mealsRepository.deleteMeal(rmap);
+    }
+
+    public void updateMealDetail(Map<String, Object> rmap) {
+        mealsRepository.updateMealDetail(rmap);
+    }
+
+    public List<Map<String, Object>> getFavorFood(Map<String, Object> rmap) {
+        return mealsRepository.getFavorFood(rmap);
     }
 }
