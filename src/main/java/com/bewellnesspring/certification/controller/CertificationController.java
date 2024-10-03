@@ -33,7 +33,7 @@ public class CertificationController {
 	 */
 	@GetMapping("/signinOk")
 	public ResponseEntity<UserFront> signIn() {
-		UserFront dbUser = service.signIn(SecurityContextHolder.getContext().getAuthentication());
+		UserFront dbUser = new UserFront(service.signIn(SecurityContextHolder.getContext().getAuthentication()));
 		return ResponseEntity.ok(dbUser);
 	}
 
@@ -51,7 +51,6 @@ public class CertificationController {
 	 * 로그아웃 성공 후 실행되는 메서드
 	 * @param u 사용자가 입력한 id, pw
 	 * @return 해당 아이디로 검색된 사용자 정보
-	 * @todo 나중에 사용자 정보들을 그때 그때 필요한 내용을 가져다 쓸건지 아니면 로그인시 한번에 주고 말건지 정해야함
 	 */
 	@GetMapping("signoutOk")
 	public ResponseEntity<String> signOut() {
@@ -64,7 +63,7 @@ public class CertificationController {
 	 * @return 사용자가 입력한 id 사용 가능 여부
 	 */
 	@GetMapping("/check")
-	public ResponseEntity<Object> idCheck(@RequestParam(name = "idck") String idck) {
+	public ResponseEntity<Object> idCheck(@RequestParam("idck") String idck) {
 		return new ResponseEntity<>(service.idCheck(idck) ? HttpStatus.MULTI_STATUS : HttpStatus.NO_CONTENT);
 	}
 	
@@ -75,8 +74,8 @@ public class CertificationController {
 	 * @throws IOException 
 	 */
 	@GetMapping("/kakao")
-	public ResponseEntity<UserFront> useKakao(@RequestParam(name = "code") String code) throws IOException {
-		UserFront u = (UserFront) service.useKakao(code, null);
+	public ResponseEntity<UserFront> useKakao(@RequestParam("code") String code) throws IOException {
+		UserFront u = new UserFront(service.useKakao(code, null));
 		return u != null ? ResponseEntity.ok(u) : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 }

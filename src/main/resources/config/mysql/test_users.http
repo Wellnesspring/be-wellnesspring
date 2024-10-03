@@ -12,7 +12,7 @@ Content-Type: application/json
   "height": "175",
   "weight": "70",
   "alarmAgree": "동의",
-  "profileImg": "img",
+  "profileImg": "2",
   "point": "1"
 }
 
@@ -24,12 +24,12 @@ Content-Type: application/json
   "userId": "user02",
   "userPw": "pw02",
   "name": "김민지",
-  "serialNumF": "940202",
+  "serialNumF": "9402022",
   "serialNumL": "2122334",
   "phone": "010-5678-5678",
   "height": "182",
   "weight": "78",
   "alarmAgree": "거부",
-  "profileImg": "img",
+  "profileImg": "1",
   "point": "1"
 }

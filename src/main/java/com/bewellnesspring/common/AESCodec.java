@@ -26,6 +26,7 @@ public class AESCodec {
 	 * @param AESKey 암호화 키
 	 * @param originalData 암호화할 값
 	 * @return 암호화된 값
+	 * @exception GeneralSecurityException 사용자 정보 암호화 중 에러 발생
 	 */
 	public static String AESEncrypt(String AESKey, String originalData) throws GeneralSecurityException {
 		Cipher cipher = Cipher.getInstance("AES");
@@ -41,6 +42,7 @@ public class AESCodec {
 	 * @param AESKey 암호화에 사용했던 암호화 키
 	 * @param encryptedData 복호화 할 값
 	 * @return 복호화된 값
+	 * @exception GeneralSecurityException 사용자 정보 복호화 중 에러 발생
 	 */
 	public static String AESDecrypt(String AESKey, String encryptedData) throws GeneralSecurityException {
 		Cipher cipher = Cipher.getInstance("AES");
@@ -54,7 +56,7 @@ public class AESCodec {
 	 * @param AESKey 변환할 SecretKey
 	 * @return String 으로 변환된 SecretKey
 	 */
-	public static String SecretKeyToString(SecretKey AESKey) {
+	private static String SecretKeyToString(SecretKey AESKey) {
 		return Base64.getEncoder().encodeToString(AESKey.getEncoded());
 	}
 
@@ -63,7 +65,7 @@ public class AESCodec {
 	 * @param AESKey 변환할 SecretKey(String)
 	 * @return SecretKey 으로 변환된 SecretKey
 	 */
-	public static SecretKey StringToSecretKey(String AESKey) {
+	private static SecretKey StringToSecretKey(String AESKey) {
 		return new SecretKeySpec(Base64.getDecoder().decode(AESKey),"AES");
 	}
 }

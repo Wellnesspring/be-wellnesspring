@@ -16,13 +16,14 @@
 	</select>
 
 	<insert id="signUp" parameterType="user">
-		INSERT INTO USERS(user_id, user_pw, name, serial_num_f, phone, locker)
+		INSERT INTO USERS(user_id, user_pw, name, serial_num_f, phone, profile_img, locker)
 		VALUES (
 		        #{userId},
                 #{userPw},
                 #{name},
                 #{serialNumF},
                 #{phone},
+                #{profileImg},
 		        #{locker}
 			   )
 	</insert>
@@ -39,4 +40,17 @@
             #{platform}
    		)
 	</insert>
+	
+	<update id="uploadProfile" parameterType="user">
+		UPDATE USERS
+		SET 
+			NAME = #{name},
+			PHONE = #{phone},
+			SERIAL_NUM_F = #{serialNumF},
+			PROFILE_IMG = #{profileImg},
+			HEIGHT = #{height},
+			WEIGHT = #{weight},
+			LOCKER = #{locker}
+		WHERE USER_ID = #{userId}
+	</update>
 </mapper>
