@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,6 +68,17 @@ public class UserController {
 	@GetMapping("data")
 	public UserEdit loadProfile(@RequestParam("userId") String userId) {
 		return new UserEdit(service.signIn(userId));
+	}
+	
+	/**
+	 * 계정 삭제
+	 * @param userId 삭제할 계정의 Id
+	 * @return
+	 */
+	@DeleteMapping("goodbye")
+	public ResponseEntity<Object> deleteProfile(@RequestParam("userId") String userId) {
+		service.deleteProfile(userId);
+		return ResponseEntity.noContent().build();
 	}
 	
 }

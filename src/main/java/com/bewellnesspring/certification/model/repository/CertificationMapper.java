@@ -38,4 +38,8 @@ public interface CertificationMapper {
 	int addKakao(Social social);
 
 	int uploadProfile(User userEncoding);
+
+	void deleteProfile(String userId);
+
+	void deleteSocial(String userId);
 }

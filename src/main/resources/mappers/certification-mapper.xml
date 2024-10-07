@@ -5,7 +5,7 @@
 	<select id="signIn" parameterType="string" resultType="user">
 		SELECT *
 		FROM USERS
-		WHERE USER_ID = #{userId}
+		WHERE USER_ID = #{userId} AND DELETE_AT IS NULL
 	</select>
 
 	<select id="signInAtIdNum" parameterType="long" resultType="user">
@@ -53,4 +53,15 @@
 			LOCKER = #{locker}
 		WHERE USER_ID = #{userId}
 	</update>
+	
+	<update id="deleteProfile" parameterType="string">
+		UPDATE USERS
+		SET DELETE_AT = NOW()
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<delete id="deleteSocial" parameterType="string">
+		DELETE FROM SOCIAL
+		WHERE USER_ID = #{userId}
+	</delete>
 </mapper>
