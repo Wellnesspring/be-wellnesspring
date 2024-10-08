@@ -259,4 +259,11 @@ public class CertificationService implements UserDetailsService {
 		String responseBody = rt.exchange(userInfoProvider, HttpMethod.GET, new HttpEntity<>(header), String.class).getBody();
 		return gson.fromJson(responseBody, JsonObject.class).get("id").getAsLong();
 	}
+
+	public void deleteProfile(String userId) {
+		if(userId != null && userId.length() > 0) {
+			dao.deleteSocial(userId);
+			dao.deleteProfile(userId);
+		}
+	}
 }
