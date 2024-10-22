@@ -78,12 +78,12 @@ public class SecurityConfig {
 	    return jsonLoginFilter;
 	}
 	
-//	개발용 crossOrigin 지정
+//	crossOrigin 지정
 //	프로젝트 전체에 적용되어 컨트롤러 별로 CrossOrigin을 적용하지 않아도 됨
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://fe-wellnesspring-dawn-morning-7728.fly.dev/"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
