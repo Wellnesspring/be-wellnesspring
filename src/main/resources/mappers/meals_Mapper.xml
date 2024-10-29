@@ -104,10 +104,5 @@
         WHERE A.user_id = #{user_id}
     </select>
 
-    <!--계획 추가 -->
-    <insert id = "setUserGoals" parameterType="java.util.Map">
-        INSERT INTO plan (kcal_plan_amount, plan_date, na_plan_amount, protein_plan_amount, fiber_plan_amount, fat_plan_amount, cholesterol_plan_amoun, carbohydrate_plan_amount, user_id)
-        VALUES(#{})
-    </insert>
 
 </mapper>
