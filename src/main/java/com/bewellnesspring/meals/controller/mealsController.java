@@ -72,11 +72,12 @@ public class mealsController {
 
     // 식사 추가
     @PostMapping("/addMeal")
-    public void addMeal(@RequestParam(defaultValue = "userid_test") String user_id, @RequestParam String meal) {
+    public void addMeal(@RequestParam(defaultValue = "userid_test") String user_id, @RequestParam String meal, @RequestParam String date) {
         Map<String, Object> rmap = new HashMap<>();
         logger.info(user_id, meal);
         rmap.put("user_id", user_id);
         rmap.put("meal", meal);
+        rmap.put("date", date);
         mealsService.addMeal(rmap);
     }
 
@@ -132,6 +133,7 @@ public class mealsController {
         rmap.put("meal_id", meal_id);
         mealsService.deleteMeal(rmap);
     }
+
 
 
 }

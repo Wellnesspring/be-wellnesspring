@@ -25,7 +25,7 @@
     <!-- 식사 추가 -->
     <insert id="addMeal" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="meal_id">
         INSERT INTO meal (user_id, meal_time, meal)
-        VALUES (#{user_id}, NOW(), #{meal});
+        VALUES (#{user_id}, DATE(#{date}), #{meal});
     </insert>
 
     <!-- 식사 상세 정보 추가 -->
@@ -103,5 +103,6 @@
         LEFT OUTER JOIN food_category AS B ON A.food_id = B.id
         WHERE A.user_id = #{user_id}
     </select>
+
 
 </mapper>
