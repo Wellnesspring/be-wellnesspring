@@ -4,13 +4,13 @@
 
     <!-- API에서 받아온 데이터를 Food_category 테이블에 삽입하기 -->
     <insert id="insertApitoFoodCategory">
-        INSERT INTO Food_Category (id, food_name, kcal, na, protein, fiber, fat, cholesterol, carbohydrate)
+        INSERT INTO food_category (id, food_name, kcal, na, protein, fiber, fat, cholesterol, carbohydrate)
         VALUES (#{id}, #{food_name}, #{kcal}, #{na}, #{protein}, #{fiber}, #{fat}, #{cholesterol}, #{carbohydrate})
     </insert>
 
     <!-- Food_category 테이블 비우기 -->
     <delete id="truncateFoodCategory">
-        TRUNCATE TABLE food_Category
+        TRUNCATE TABLE food_category
     </delete>
 
 </mapper>

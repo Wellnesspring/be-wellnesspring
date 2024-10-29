@@ -4,19 +4,23 @@
 
 	<select id="signIn" parameterType="string" resultType="user">
 		SELECT *
-		FROM USERS
-		WHERE USER_ID = #{userId} AND DELETE_AT IS NULL
+
+		FROM users
+		WHERE user_id = #{userId} and delete_at is null
+
 	</select>
 
 	<select id="signInAtIdNum" parameterType="long" resultType="user">
 		SELECT *
-		FROM USERS
+		FROM users
 		INNER JOIN social using(user_id)
 		WHERE platform = 'kakao' and id_num = #{idNum}
 	</select>
 
 	<insert id="signUp" parameterType="user">
-		INSERT INTO USERS(user_id, user_pw, name, serial_num_f, phone, profile_img, locker)
+
+    INSERT INTO users(user_id, user_pw, name, serial_num_f, phone, profile_img, locker)
+
 		VALUES (
 		        #{userId},
                 #{userPw},
@@ -33,7 +37,7 @@
 	</select>
 	
 	<insert id="addKakao" parameterType="social">
-		INSERT INTO SOCIAL(user_id, id_num, platform)
+		INSERT INTO social(user_id, id_num, platform)
 		VALUES (
 	        #{userId},
             #{idNum},

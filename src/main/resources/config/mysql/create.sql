@@ -6,19 +6,19 @@ create database wellness;
 use wellness;
 
 DROP TABLE if exists social;
-DROP TABLE if exists Food_Category;
-DROP TABLE if exists Food_Like;
-DROP TABLE if exists Meal;
-DROP TABLE if exists Meal_detail;
-DROP TABLE if exists Sport_Category;
-DROP TABLE if exists Sport_Like;
-DROP TABLE if exists Sport_Routine;
-DROP TABLE if exists Sport_Routine_List;
-DROP TABLE if exists Weight_Record;
-DROP TABLE if exists Alert;
-DROP TABLE if exists Alert_type;
+DROP TABLE if exists food_category;
+DROP TABLE if exists food_like;
+DROP TABLE if exists meal;
+DROP TABLE if exists meal_detail;
+DROP TABLE if exists sport_category;
+DROP TABLE if exists sport_like;
+DROP TABLE if exists sport_routine;
+DROP TABLE if exists sport_routine_List;
+DROP TABLE if exists weight_record;
+DROP TABLE if exists alert;
+DROP TABLE if exists alert_type;
 DROP TABLE if exists users;
-DROP TABLE if exists PLAN;
+DROP TABLE if exists plan;
 DROP TABLE if exists sport_plan;
 DROP TABLE if exists sport_plan_item;
 DROP TABLE if exists sport_record;
@@ -42,7 +42,7 @@ CREATE TABLE users(
         locker varchar(100) NOT NULL
 );
 
-CREATE TABLE Social(
+CREATE TABLE social(
     platform VARCHAR(20) NOT NULL COMMENT '소셜 플랫폼',
     user_id VARCHAR(50) NOT NULL,
     id_num varchar(20) NOT NULL COMMENT '해당플랫폼에서의 식별값',
@@ -50,7 +50,7 @@ CREATE TABLE Social(
  	foreign key (user_id) references users(user_id)
 );
 
-CREATE TABLE  Food_Category  (
+CREATE TABLE  food_category  (
          id 	int auto_increment primary key	NOT NULL,
          food_name 	varchar(255),
          kcal 	float,
@@ -62,18 +62,18 @@ CREATE TABLE  Food_Category  (
          carbohydrate float
 );
 
-CREATE TABLE  Food_Like  (
+CREATE TABLE  food_like  (
      id 	int auto_increment primary key	NOT NULL,
      food_id 	int	COMMENT 'Food_Category 테이블의 id',
      liked_at 	timestamp DEFAULT now()
 );
 
-CREATE TABLE  Meal  (
+CREATE TABLE  meal  (
         meal_id 	int auto_increment primary key	NOT NULL,
         meal_time 	timestamp	DEFAULT now()
 );
 
-CREATE TABLE  Meal_detail  (
+CREATE TABLE  meal_detail  (
        id 	int auto_increment primary key	NOT NULL,
        meal_id 	int	COMMENT 'Meal 테이블의 id',
        food_id 	int	COMMENT 'Food_Category 테이블의 id',
@@ -81,26 +81,26 @@ CREATE TABLE  Meal_detail  (
        amount 	float COMMENT '갯수,gram 등으로 표현'
 );
 
-CREATE TABLE  Sport_Category  (
+CREATE TABLE  sport_category  (
       id int auto_increment primary key NOT NULL,
       sport_name varchar(255),
       kcal float
 );
 
-CREATE TABLE  Sport_Like  (
+CREATE TABLE  sport_Like  (
       id 	int auto_increment primary key	NOT NULL,
       sport_category_id 	int COMMENT 'Sport_Category 테이블의 id',
       liked_at 	timestamp	DEFAULT now()
 );
 
-CREATE TABLE  Weight_Record  (
+CREATE TABLE  weight_record  (
          id int auto_increment primary key	NOT NULL,
          user_id VARCHAR(50) COMMENT 'Users 테이블의 id',
          weight_now int,
          record_at 	timestamp	DEFAULT now()
 );
 
-CREATE TABLE  Alert  (
+CREATE TABLE  alert  (
          id int auto_increment primary key	NOT NULL,
          type_id 	int,
          user_id 	VARCHAR(50),
@@ -110,7 +110,7 @@ CREATE TABLE  Alert  (
          scheduled int
 );
 
-CREATE TABLE  Alert_type  (
+CREATE TABLE  alert_type  (
           type_id 	int auto_increment primary key	NOT NULL,
           altype 	varchar(20)	COMMENT '종목별 알림(운동시간,식사알림,목표달성 등)',
           message1 	varchar(255),
@@ -118,7 +118,7 @@ CREATE TABLE  Alert_type  (
 
 );
 
-create table Plan (
+create table plan (
     plan_id            int auto_increment primary key,
     user_id           varchar(50),
     sport_plan_time    float,
@@ -133,7 +133,7 @@ create table Plan (
     carbohydrate_plan_amount float
 );
 
-CREATE TABLE  Sport_Record  (
+CREATE TABLE  sport_record  (
      id 	int auto_increment primary key	NOT NULL,
      user_id 	VARCHAR(50)	NULL,
      sport_plan_id 	int	NULL,
@@ -144,7 +144,7 @@ CREATE TABLE  Sport_Record  (
 );
 
 
-CREATE TABLE  Sport_plan  (
+CREATE TABLE  sport_plan  (
    id 	int auto_increment primary key	NOT NULL,
    user_id 	VARCHAR(50)	NULL,
    total_sport_start 	timestamp	NULL,
@@ -155,7 +155,7 @@ CREATE TABLE  Sport_plan  (
 
 );
 
-CREATE TABLE  Sport_Record_Item  (
+CREATE TABLE  sport_record_item  (
           id 	int auto_increment primary key	NOT NULL,
           sport_record_id 	int	NULL,
           sport_category_id 	int	NULL	COMMENT '한국건강증진개발원_보건소 모바일 헬스케어 운동 api',
@@ -165,7 +165,7 @@ CREATE TABLE  Sport_Record_Item  (
           burn_kcal 	float	NULL
 );
 
-CREATE TABLE  Sport_Plan_Item  (
+CREATE TABLE  sport_plan_item  (
         id 	int auto_increment primary key	NOT NULL,
         sport_plan_id 	int	NULL,
         sport_category_id 	int	NULL	COMMENT '한국건강증진개발원_보건소 모바일 헬스케어 운동 api',

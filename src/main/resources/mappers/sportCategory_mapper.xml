@@ -4,25 +4,25 @@
 
     <!-- API에서 받아온 데이터를 Sport_category 테이블에 삽입하기 -->
     <insert id="insertApitoSportCategory">
-        INSERT INTO Sport_Category (id, sport_name, kcal)
+        INSERT INTO sport_category (id, sport_name, kcal)
         VALUES (#{id}, #{sportName}, #{kcal})
     </insert>
 
     <!-- Sport_category 테이블 비우기 -->
     <delete id="truncateSportCategory">
-        TRUNCATE TABLE Sport_category
+        TRUNCATE TABLE sport_category
     </delete>
 
     <select id="findByName" parameterType="String" resultType="SportCategory">
-        select * from Sport_category where sport_name = #{sportName}
+        select * from sport_category where sport_name = #{sportName}
     </select>
 
     <select id="findById" parameterType="Long" resultType="SportCategory">
-        SELECT * FROM Sport_category where id = #{id}
+        SELECT * FROM sport_category where id = #{id}
     </select>
 
     <select id="findAll" resultType="SportCategory">
-        SELECT * FROM Sport_category
+        SELECT * FROM sport_category
     </select>
 
 

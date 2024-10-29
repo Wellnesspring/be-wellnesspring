@@ -10,7 +10,7 @@
     </select>
 
     <insert id="saveSubscribe">
-        INSERT INTO Subscribe (user_id, endPoint, publicKey, authToken )
+        INSERT INTO subscribe (user_id, endPoint, publicKey, authToken )
         VALUES (#{userId}, #{endPoint}, #{publicKey}, #{authToken} )
     </insert>
 
