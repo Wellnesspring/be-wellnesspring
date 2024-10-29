@@ -7,15 +7,15 @@
     </insert>
 
     <select id="findAll">
-        select * from alert_Type;
+        select * from alert_type;
     </select>
 
     <select id="findById" parameterType="Long" resultType="AlertType" >
-        select * from alert_Type where id = #{typeId}
+        select * from alert_type where id = #{typeId}
     </select>
 
     <select id="findByAltype" resultType="AlertType">
-        select * from alert_Type where altype = #{altype}
+        select * from alert_type where altype = #{altype}
     </select>
 
 

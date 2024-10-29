@@ -3,11 +3,11 @@
 <mapper namespace="com.bewellnesspring.sport.model.repository.SportRecordMapper">
 
     <insert id="saveRecord" parameterType="SportRecord" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO sport_Record (user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
+    INSERT INTO sport_record (user_id, total_sport_start, total_sport_end, total_duration, total_burn_kcal )
      VALUES (#{userId}, #{totalSportStart}, #{totalSportEnd}, #{totalDuration}, #{totalBurnKcal})
     </insert>
     <update id="updateRecord" parameterType="SportRecord">
-        UPDATE sport_Record
+        UPDATE sport_record
         set total_sport_start = #{totalSportStart},
         total_sport_end = #{totalSportEnd},
         total_duration = #{totalDuration},

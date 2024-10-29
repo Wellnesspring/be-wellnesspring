@@ -2,9 +2,9 @@
 
 use wellness;
 
-drop table Food_Category;
+drop table food_category;
 
-CREATE TABLE  Food_Category  (
+CREATE TABLE  food_category  (
      id 	int auto_increment primary key	NOT NULL,
      food_name 	varchar(255),
      kcal 	float,

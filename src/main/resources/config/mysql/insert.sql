@@ -10,15 +10,15 @@ INSERT INTO social(
     platform, user_id, id_num)
 VALUES ('kakao','user03','1');
 
-INSERT INTO Food_Category
+INSERT INTO food_category
 (food_name, kcal)
 VALUES ('바나나', 100);
 
-INSERT INTO Food_Category
+INSERT INTO food_category
 (food_name, kcal)
 VALUES ('사과', 50);
 
-INSERT INTO Food_Like
+INSERT INTO food_like
 (food_id, liked_at)
 VALUES (1, now());
 
@@ -26,48 +26,48 @@ INSERT INTO meal
 (meal_time)
 VALUES (now());
 
-INSERT INTO Meal_detail
+INSERT INTO meal_detail
 (meal_id, food_id, meal, amount)
 VALUES (1, 1, '바나나', 2);
 
-INSERT INTO Sport_category
+INSERT INTO sport_category
 (sport_name, kcal)
 VALUES ('축구', 2.5);
 
-INSERT INTO Sport_category
+INSERT INTO sport_category
 (sport_name, kcal)
 VALUES ('수영', 1.5);
 
-INSERT INTO Sport_Like
+INSERT INTO sport_Like
 (sport_category_id, liked_at)
 VALUES (1, now());
 
-INSERT INTO Weight_record
+INSERT INTO weight_record
 (user_id, weight_now, record_at)
 VALUES ('user01', 70, now());
 
-INSERT INTO Alert
+INSERT INTO alert
 (type_id, user_id, read_or_not, created_at, alertTime, scheduled)
 VALUES (1, 'user01', 'UNREAD', now(),2024-08-27T12:47:00 ,5);
 
-INSERT INTO Alert
+INSERT INTO alert
 (type_id, user_id, read_or_not, created_at, alertTime, scheduled)
 VALUES (2, 'user01', 'UNREAD', now(),2024-08-27T12:47:00 ,10);
 
-INSERT INTO Alert_type
+INSERT INTO alert_type
 (altype, message1, message2)
 VALUES ('운동','운동하기 ','분 전입니다!');
 
-INSERT INTO Alert_type
+INSERT INTO alert_type
 (altype, message1, message2)
 VALUES ('식사','식사하기 ','분 전입니다!');
 
-INSERT INTO Plan
+INSERT INTO plan
 (user_id, sport_plan_time, sport_plan_type, kcal_plan_amount, plan_date, protein_plan_amount,
  fiber_plan_amount, fat_plan_amount, cholesterol_plan_amount, carbohydrate_plan_amount )
 VALUES ('user01',20,1,1000,2024-08-27T12:47:00,10,20,10,10,10,10);
 
-INSERT INTO Plan
+INSERT INTO plan
 (user_id, sport_plan_time, sport_plan_type, kcal_plan_amount, plan_date, protein_plan_amount,
  fiber_plan_amount, fat_plan_amount, cholesterol_plan_amount, carbohydrate_plan_amount )
 VALUES ('user01',10,1,1500,2024-08-27T12:47:00,20,10,15,15,15,15);
