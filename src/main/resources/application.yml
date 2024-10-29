@@ -47,7 +47,6 @@ mybatis:
 social:
   kakao:
     api-key: b9f133be5346a55f04808ed817f6a6ca
-    redirect-url: http://localhost:3000/users/profile
 
 #VAPID
 vapid:

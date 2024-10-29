@@ -1,17 +1,19 @@
 package com.bewellnesspring.certification.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bewellnesspring.certification.model.vo.UserEdit;
 import com.bewellnesspring.certification.model.vo.UserFront;
 import com.bewellnesspring.certification.service.CertificationService;
 
@@ -34,28 +36,49 @@ public class UserController {
 	 */
 	@GetMapping("kakao")
 	public ResponseEntity<UserFront> addKakao(
-			@RequestParam(name = "userId") String userId,
-			@RequestParam(name = "code") String code
+			@RequestParam("userId") String userId,
+			@RequestParam("code") String code
 			) throws IOException {
-		return ResponseEntity.ok(service.useKakao(code, userId));
+		return ResponseEntity.ok(new UserFront(service.useKakao(code, userId)));
 	}
 	
 	/**
 	 * 프로필 사진용 업로드 테스트
-	 * @param file
-	 * @param request
+	 * @param profileImg 새 프로필 이미지
+	 * @param profile 그 외 변경할 사용자 정보
+	 * @return
+	 * @throws IllegalStateException 이미지 저장 중 에러 발생
+	 * @throws IOException 잘못된 사용자 정보로 인해 업데이트 실패
+	 * @throws IllegalAccessException 사용자 정보 접근 중 에러 발생
+	 * @throws GeneralSecurityException 사용자 정보 암호화 중 에러 발생
+	 */
+	@PutMapping("/profile/edit")
+	public ResponseEntity<UserFront> uploadProfile(HttpServletRequest request,
+			@RequestPart(name = "profileImgFile", required = false) MultipartFile profileImgFile,
+			@RequestPart("profile") UserEdit profile
+			) throws IllegalStateException, IOException, IllegalAccessException, GeneralSecurityException {
+		return ResponseEntity.ok(new UserFront(service.uploadProfile(profile, profileImgFile, request)));
+	}
+	
+	/**
+	 * 프로필 수정에 필요한 사용자 정보 조회
+	 * @param userId 사용자 ID
+	 * @return 해당 id에 맞는 사용자 정보
+	 */
+	@GetMapping("data")
+	public UserEdit loadProfile(@RequestParam("userId") String userId) {
+		return new UserEdit(service.signIn(userId));
+	}
+	
+	/**
+	 * 계정 삭제
+	 * @param userId 삭제할 계정의 Id
 	 * @return
 	 */
-	@PostMapping("/upload")
-	public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IllegalStateException, IOException {
-		String path = request.getSession().getServletContext().getRealPath("upload");
-		File img = new File(path, file.getOriginalFilename());
-		
-		img.mkdirs();
-		
-		if(file.getContentType().contains("image"))
-			file.transferTo(img);
-		
-		return new ResponseEntity<>(HttpStatus.OK);
+	@DeleteMapping("goodbye")
+	public ResponseEntity<Object> deleteProfile(@RequestParam("userId") String userId) {
+		service.deleteProfile(userId);
+		return ResponseEntity.noContent().build();
 	}
+	
 }
