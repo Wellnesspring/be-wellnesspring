@@ -1,5 +1,7 @@
 package com.bewellnesspring.config;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,8 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
 		String[] urls = {"/", "/home", "/about", "/contact", "/any-other-route"};
 
 		// 각 URL 패턴을 동일한 HTML 파일로 매핑
-		for (String url : urls) {
-			registry.addViewController(url).setViewName("index");
-		}
+		Arrays.stream(urls).forEach(url -> registry.addViewController(url).setViewName("index"));
 	}
 }

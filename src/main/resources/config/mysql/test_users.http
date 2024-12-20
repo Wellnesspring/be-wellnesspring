@@ -1,5 +1,5 @@
 ### test user1
-POST http://localhost:9999/auth/signup
+POST https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/auth/signup
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### test user2
-POST http://localhost:9999/auth/signup
+POST https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/auth/signup
 Content-Type: application/json
 
 {
